@@ -46,12 +46,13 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 
 	Route::put('usuarios/{user}', 'UsersController@update')->name('admin.users.update');
 
+	Route::delete('usuarios/{user}', 'UsersController@destroy')->name('admin.users.destroy');
+
 	Route::resource('usuarios', 'UsersController', ['names' => [
 	    'index' => 'admin.users.index',
 	    'create' => 'admin.users.create',
 	    'store' => 'admin.users.store',
-	    'edit' => 'admin.users.edit',
-	    //'update' => 'admin.users.update'
+	    'edit' => 'admin.users.edit'
 	]]);
 
 

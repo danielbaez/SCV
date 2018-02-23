@@ -32,3 +32,18 @@ div.dataTables_wrapper div.dataTables_paginate {float:none; text-align:center}
 .modal-footer {
 	text-align: center;
 }
+
+input {
+    background: white;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0px 9999px white !important;
+    /*-webkit-box-shadow: red !important*/
+}
+
+#modal-export .overlay {
+	text-align: center;
+}
+#modal-export .overlay i {
+	font-size: 48px
+}

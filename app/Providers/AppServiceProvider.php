@@ -17,10 +17,10 @@ class AppServiceProvider extends ServiceProvider
 	{
 		Schema::defaultStringLength(191);
 
-		Route::resourceVerbs([
+		/*Route::resourceVerbs([
             'create' => 'crear',
 			'edit' => 'editar',
-		]);
+		]);*/
 	}
 
 	/**

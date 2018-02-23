@@ -1,9 +1,46 @@
 $(document).ready(function() {
+  //***users***
+  
   var num = 0;
+  var openedModalCount = 0;
+
 	$.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
+  });
+
+  $("body").on("click", "#user-edit", function () {
+    var urlUpdate = $(this).data('url-update');
+    $.ajax({
+       type: 'GET',
+       url: $(this).data('url-edit'),
+       data: {},
+       success: function(data) {
+        console.log(data)
+        var formUserEdit = $('#form-user-edit');
+        formUserEdit.find('#name').val(data.name);
+        formUserEdit.find('#lastname').val(data.lastname);
+        formUserEdit.find('#email').val(data.email);
+        formUserEdit.find("input[name='state'][value='"+data.state+"']").prop("checked", true);
+        formUserEdit.find("select[name='rol_id']").val(data.rol_id).prop('selected', true);
+        formUserEdit.find('#document').val(data.document);
+        formUserEdit.find('#birth_date').val(data.birth_date);
+        formUserEdit.find('#address').val(data.address);
+        formUserEdit.find('#phone').val(data.phone);
+
+        formUserEdit.attr('action', urlUpdate);
+
+        $('#modal-user-edit').modal('show');
+       }
+     });
+  });
+
+  $("body").on("click", "#user-delete", function () {
+    var urlDestroy = $(this).data('url');
+    var formUserDelete = $('#form-user-delete');
+    formUserDelete.attr('action', urlDestroy);
+    $('#modal-user-delete').modal('show');
   });
 
   $("#form-user-create").submit(function(e){
@@ -52,31 +89,6 @@ $(document).ready(function() {
     });
 	});
 
-  $("body").on("click", "#user-edit", function () {
-    $.ajax({
-       type: 'GET',
-       url: $(this).data('url'),
-       data: {},
-       success: function(data) {
-        console.log(data)
-        var formUserEdit = $('#form-user-edit');
-        formUserEdit.find('#name').val(data.name);
-        formUserEdit.find('#lastname').val(data.lastname);
-        formUserEdit.find('#email').val(data.email);
-        formUserEdit.find("input[name='state'][value='"+data.state+"']").prop("checked", true);
-        formUserEdit.find("select[name='rol_id']").val(data.rol_id).prop('selected', true);
-        formUserEdit.find('#document').val(data.document);
-        formUserEdit.find('#birth_date').val(data.birth_date);
-        formUserEdit.find('#address').val(data.address);
-        formUserEdit.find('#phone').val(data.phone);
-
-        formUserEdit.data('id', data.id);
-
-        $('#modal-user-edit').modal('show');
-       }
-     });
-  });
-
   $("#form-user-edit").submit(function(e){
     e.preventDefault(e);
 
@@ -85,7 +97,7 @@ $(document).ready(function() {
 
     $.ajax({
        type: 'POST',
-       url: $this.attr('action').slice(0, -1)+$(this).data('id'),
+       url: $this.attr('action'),
        data: new FormData(this),
        contentType: false,
        cache: false,
@@ -123,6 +135,43 @@ $(document).ready(function() {
     });
   });
 
+  $("#form-user-delete").submit(function(e){
+    e.preventDefault(e);
+
+    var $this = $(this);
+    $this.find(":submit").prop('disabled', true);
+
+    $.ajax({
+       type: 'POST',
+       url: $this.attr('action'),
+       data: new FormData(this),
+       contentType: false,
+       cache: false,
+       processData:false,
+       success: function(data){
+        console.log(data)
+        if(data.state) {
+          window.location = data.url;
+        }
+       },
+       error: function (request, status, error) {
+        $this.find(":submit").prop('disabled', false);
+      }
+    });
+  });
+
+  $("#modal-user-create").on("show.bs.modal", function () {
+    openedModalCount++;
+    if(openedModalCount == 1) {
+      $("#form-user-create").find('#email').val('');
+      $("#form-user-create").find('#password').val('');
+    }
+  });
+
+  $("#modal-user-edit").on("show.bs.modal", function () {
+    $("#form-user-edit").find('#password').val('');
+  });
+
   $("#modal-user-create, #modal-user-edit").on("hidden.bs.modal", function () {
     $('div.form-group').removeClass('has-error');
     $('div.form-group').removeClass(function(index,classes){
@@ -131,6 +180,8 @@ $(document).ready(function() {
     });
     $('span.help-block').remove();
   });
+
+  //***DataTable***
 
 	jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
 		
@@ -218,7 +269,12 @@ $(document).ready(function() {
       },
 	    {data: 'rol.name'},
 	    {data: 'action', visible: true, render: function ( data, type, full, meta ) {
-          return '<button class="btn btn-md btn-primary" title="Editar" id="user-edit" data-url="'+data+'"><i class="fa fa-edit"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="delete-user" data-url="'+data+'"><i class="fa fa-ban"></i></button>';
+          //return '<button class="btn btn-md btn-primary" title="Editar" id="user-edit" data-url="'+data+'"><i class="fa fa-edit"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="user-delete" data-url="'+data+'"><i class="fa fa-ban"></i></button>';
+
+
+          var url = data.split(',');
+
+          return '<button class="btn btn-md btn-primary" title="Editar" id="user-edit" data-url-edit="'+url[0]+'" data-url-update="'+url[1]+'"><i class="fa fa-edit"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="user-delete" data-url="'+url[2]+'"><i class="fa fa-ban"></i></button>';
         }
       }
 		],
@@ -264,13 +320,14 @@ $(document).ready(function() {
 	});
 
 	$('.dt-buttons.btn-group').append('<button type="button" onclick="fnAction(\'excel\');" class="btn btn-default">Excel</button><button type="button" onclick="fnAction(\'csv\');" class="btn btn-default">CSV</button><button type="button" onclick="fnAction(\'pdf\');" class="btn btn-default">PDF</button>').addClass('m-l-1')
+
 });
 
 function fnAction(action) {
 	$('#modal-export').modal({
 	  backdrop: 'static',
 	  keyboard: false
-	});
+  });
 
 	setTimeout(function() {
 		$('.buttons-'+action).trigger('click');

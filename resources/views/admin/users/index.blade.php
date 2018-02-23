@@ -10,9 +10,6 @@
 		USUARIOS <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-user-create">
 		<i class="fa fa-plus"></i> CREAR</button>
 	</h1>
-
-  
-
 @endsection
 @section('content')
 
@@ -25,8 +22,8 @@
 					<h4 class="modal-title">Procesando registros a descargar ...</h4>
 				</div>
 				<div class="modal-body">
-					<div class="overlay" style="text-align: center">
-						<i class="fa fa-refresh fa-spin" style="font-size: 48px"></i>
+					<div class="overlay">
+						<i class="fa fa-refresh fa-spin"></i>
 					</div>
 				</div>
 			</div>
@@ -35,6 +32,7 @@
 
 	@include('admin.users.create')
 	@include('admin.users.edit')
+	@include('admin.users.delete')
 
     <div class="col-xs-12">
     	<div class="box box-primary">

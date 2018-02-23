@@ -54,7 +54,8 @@ class UsersController extends Controller
                     return '<a href="'.$users->id.'" class="btn btn-md btn-primary" title="Editar"><i class="fa fa-edit"></i></a> <a href="'.$users->id.'" class="btn btn-md btn-danger" title="Eliminar"><i class="fa fa-ban"></i></a>';
                 })*/
                 ->addColumn('action', function ($users) {
-                    return route('admin.users.edit', $users->id);
+                    //return route('admin.users.edit', $users->id);
+                    return route('admin.users.edit', $users->id).','.route('admin.users.update', $users->id).','.route('admin.users.destroy', $users->id);
                 })
                 ->toJson();
     }
@@ -173,8 +174,13 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, User $user)
     {
-        //
+        $user->state = 0;
+        $user->save();
+        
+        $request->session()->flash('flash', 'Se ha desactivado el usuario correctamente');
+
+        return response()->json(['state' => true, 'url' => route('admin.users.index')]);
     }
 }

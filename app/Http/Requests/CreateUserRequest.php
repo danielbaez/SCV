@@ -45,7 +45,6 @@ class CreateUserRequest extends FormRequest
                 'name' => 'required',
                 'lastname' => 'required',
                 'email' => ['required', Rule::unique('users')->ignore($this->route('user')->id)],
-                'password' => 'required|min:6',
                 'state' => 'required',
                 'rol_id' => 'required',
                 'document' => ['required', 'max:8', Rule::unique('users')->ignore($this->route('user')->id)],
@@ -53,6 +52,11 @@ class CreateUserRequest extends FormRequest
                 'address' => 'required',
                 'phone' => ['required', 'max:9', Rule::unique('users')->ignore($this->route('user')->id)]
             ];    
+        }
+
+        if(!empty($this->get('password')))
+        {
+            $rules['password'] = ['required', 'min:6'];   
         }
         
         if($this->hasFile('photo'))
