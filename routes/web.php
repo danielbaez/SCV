@@ -43,25 +43,27 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 	Route::get('dashboard', 'HomeController@index')->name('admin.dashboard');
 
 	Route::get('usuarios/ajaxUsers', 'UsersController@ajaxUsers')->name('admin.users.ajaxUsers');
+	Route::resource('users', 'UsersController', 
+		['parameters' => ['users' => 'user'],
+		 'as' => 'admin'
+		]
+	);
 
-	Route::put('usuarios/{user}', 'UsersController@update')->name('admin.users.update');
+	Route::resource('roles', 'RolesController', 
+		['parameters' => ['roles' => 'rol'],
+		 'as' => 'admin'
+		]
+	);
 
-	Route::delete('usuarios/{user}', 'UsersController@destroy')->name('admin.users.destroy');
+	Route::resource('vouchers', 'VouchersController', ['as' => 'admin']);
 
-	Route::resource('usuarios', 'UsersController', ['names' => [
-	    'index' => 'admin.users.index',
-	    'create' => 'admin.users.create',
-	    'store' => 'admin.users.store',
-	    'edit' => 'admin.users.edit'
-	]]);
-
-	Route::get('roles', 'RolesController@index')->name('admin.roles.index');
-	Route::post('roles', 'RolesController@store')->name('admin.roles.store');
-	Route::get('roles/{rol}/edit', 'RolesController@edit')->name('admin.roles.edit');
-	Route::put('roles/{rol}', 'RolesController@update')->name('admin.roles.update');
-	Route::delete('roles/{rol}', 'RolesController@destroy')->name('admin.roles.destroy');
-
-
+	Route::resource('configurations', 'ConfigurationsController',
+		['as' => 'admin',
+		 'except' => [
+    		'create', 'store', 'destroy'
+		 ]
+		]
+	);
 
 });
 

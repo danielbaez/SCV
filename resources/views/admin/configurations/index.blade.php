@@ -7,8 +7,7 @@
 
 @section('header')
 	<h1>
-		ROLES <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-rol-create">
-		<i class="fa fa-plus"></i> CREAR</button>
+		CONFIGURACIÓN
 	</h1>
 @endsection
 @section('content')
@@ -30,35 +29,35 @@
 		</div>
 	</div>
 
-	@include('admin.roles.create')
-	@include('admin.roles.edit')
-	@include('admin.roles.delete')
+	@include('admin.configurations.edit')
 
     <div class="col-xs-12">
     	<div class="box box-primary">
             <div class="box-body">
             	<div class="table-responsive">
-	            	<table class="table table-bordered table-hover table-width-75" id="roles">
+	            	<table class="table table-bordered table-hover table-width-100" id="configurations">
 				  		<thead>
 				  			<th>ID</th>
-				  			<th>Rol</th>
-				  			<th>Estado</th>
-				  			<th>Acciones</th>
+				  			<th>Empresa</th>
+				  			<th>Nro Documento</th>
+				  			<th>Dirección</th>
+				  			<th>Teléfono</th>
+				  			<th>Logo</th>
+				  			<th>Acción</th>
 				  		</thead>
 				  		<tbody>
-				  			@foreach($roles as $rol)
-				  				<tr>
-				  					<td>{{ $rol->id }}</td>
-				  					<td>{{ $rol->name }}</td>
-				  					<td class="text-center">
-				  						{!! $rol->state == 1 ? "<span class='badge alert-success'>Activo</span>" : "<span class='badge alert-danger'>Inactivo</span>" !!}
-				  					</td>
-				  					<td class="text-center">
-				  						<button class="btn btn-md btn-primary" title="Editar" id="rol-edit" data-url-edit="{{ route('admin.roles.edit', $rol->id) }}" data-url-update="{{ route('admin.roles.update', $rol->id) }}"><i class="fa fa-edit"></i></button>
-				  						<button class="btn btn-md btn-danger" title="Eliminar" id="rol-delete" data-url="{{ route('admin.roles.destroy', $rol->id) }}"><i class="fa fa-ban"></i></button>
-				  					</td>
-				  				</tr>
-				  			@endforeach
+			  				<tr>
+			  					<td>{{ $configuration->id }}</td>
+			  					<td>{{ $configuration->company }}</td>
+			  					<td>{{ $configuration->document }}</td>
+			  					<td>{{ $configuration->address }}</td>
+			  					<td>{{ $configuration->phone }}</td>
+			  					<td>{{ $configuration->logo }}</td>
+			  					</td>
+			  					<td class="text-center">
+			  						<button class="btn btn-md btn-primary" title="Editar" id="configuration-edit" data-url-edit="{{ route('admin.configurations.edit', $configuration->id) }}" data-url-update="{{ route('admin.configurations.update', $configuration->id) }}"><i class="fa fa-edit"></i></button>
+			  					</td>
+			  				</tr>
 				  		</tbody>
 				  	</table>
 				</div>
@@ -82,5 +81,5 @@
 	<script src="{{ asset('js/datatables-export-buttons/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.colVis.min.js') }}"></script>
 	<script src="{{ asset('js/admin/script.js') }}"></script>
-	<script src="{{ asset('js/admin/roles.js') }}"></script>
+	<script src="{{ asset('js/admin/configurations.js') }}"></script>
 @endpush

@@ -19,7 +19,17 @@ function my_asset_storage($path, $secure = null)
 
 function setActiveRoute($name)
 {
-	return request()->routeIs($name) ? 'active' : '';
+	if(is_array($name))
+	{
+		foreach ($name as $key => $value) {
+			return request()->routeIs($name) ? 'active' : '';
+		}	
+	}
+	else
+	{
+		return request()->routeIs($name) ? 'active' : '';
+	}
+	
 }
     	
 ?>

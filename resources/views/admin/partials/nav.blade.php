@@ -4,23 +4,23 @@
   <li class="{{ setActiveRoute('admin.dashboard') }}">
     <a href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
   </li>
-  <li class="treeview {{ setActiveRoute('login') }}">
+  <li class="treeview {{ setActiveRoute(['admin.configurations.index', 'admin.vouchers.index']) }}">
     <a href="#"><i class="fa fa-wrench"></i> <span>Configuración</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
     <ul class="treeview-menu">
-      <li class="{{ setActiveRoute('login') }}">
-        <a href="{{ route('admin.users.index') }}"><i class="fa fa-wrench"></i> Configuración</a>
+      <li class="{{ setActiveRoute('admin.configurations.index') }}">
+        <a href="{{ route('admin.configurations.index') }}"><i class="fa fa-wrench"></i> Configuración</a>
       </li>
-      <li class="{{ setActiveRoute('login') }}">
-        <a href="{{ route('admin.users.index') }}"><i class="fa fa-book"></i> Documentos</a>
+      <li class="{{ setActiveRoute('admin.vouchers.index') }}">
+        <a href="{{ route('admin.vouchers.index') }}"><i class="fa fa-book"></i> Comprobantes</a>
       </li>     
     </ul>
   </li>
 
-  <li class="treeview {{ setActiveRoute('admin.users.index') }}">
+  <li class="treeview {{ setActiveRoute(['admin.users.index', 'admin.roles.index']) }}">
     <a href="#"><i class="fa fa-users"></i> <span>Usuarios</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
@@ -30,7 +30,7 @@
       <li class="{{ setActiveRoute('admin.users.index') }}">
         <a href="{{ route('admin.users.index') }}"><i class="fa fa-users"></i> Usuarios</a>
       </li>
-      <li class="">
+      <li class="{{ setActiveRoute('admin.roles.index') }}">
         <a href="{{ route('admin.roles.index') }}"><i class="fa fa-user"></i> Roles</a>
       </li>
       <li class="">
