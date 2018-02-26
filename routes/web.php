@@ -55,6 +55,12 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 	    'edit' => 'admin.users.edit'
 	]]);
 
+	Route::get('roles', 'RolesController@index')->name('admin.roles.index');
+	Route::post('roles', 'RolesController@store')->name('admin.roles.store');
+	Route::get('roles/{rol}/edit', 'RolesController@edit')->name('admin.roles.edit');
+	Route::put('roles/{rol}', 'RolesController@update')->name('admin.roles.update');
+	Route::delete('roles/{rol}', 'RolesController@destroy')->name('admin.roles.destroy');
+
 
 
 });

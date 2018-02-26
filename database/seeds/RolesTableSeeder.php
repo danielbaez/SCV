@@ -13,13 +13,16 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         Rol::create([
-        	'name' => 'Administrador'
+        	'name' => 'Administrador',
+            'state' => 1
         ]);
         Rol::create([
-        	'name' => 'Registrador'
+        	'name' => 'Registrador',
+            'state' => 1
         ]);
         Rol::create([
-        	'name' => 'Vendedor'
+        	'name' => 'Vendedor',
+            'state' => 1
         ]);
 
     }

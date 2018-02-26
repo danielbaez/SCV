@@ -1,5 +1,15 @@
 .table-width-100 {
-	width: 100% !important
+	width: 100% !important;
+	margin: auto;
+}
+
+.table-width-75 {
+	width: 75% !important;
+	margin: auto;
+}
+
+.dt-buttons.btn-group {
+	margin-left: 1px !important;
 }
 
 div.dataTables_info {position:absolute}

@@ -48,6 +48,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException)
+        {//cuando el token que se envia d un formulario no coincide con el token del servicor, en vez de mostrar el mensaje por default "The page has expired due to inactivity. Please refresh and try again" redireccionamos al login
+            return redirect()->route('login');
+        }        
+
         return parent::render($request, $exception);
     }
 }
