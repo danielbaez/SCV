@@ -6,9 +6,10 @@ $.ajaxSetup({
 });
 
 //***DataTable***
-function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExport, orientationPdf, pageSize, pageLength, search=true) {
+function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExport, orientationPdf, pageSize, pageLength, search, order, pagination) {
+
   $('#'+tableId).DataTable({
-    order: [ [0, 'desc'] ],
+    order: order,
     "columnDefs": [
       {"targets": hiddenColumn, orderable: false},
     ],
@@ -28,6 +29,7 @@ function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExpo
     ],
     "pageLength": pageLength,
     "searching": search,
+    "paging": pagination,
     "language": {
         "lengthMenu": "Mostrar _MENU_ registros por página",
         "zeroRecords": "No se encontraron registros",
@@ -51,14 +53,14 @@ function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExpo
 }
 
 //create
-function storeR(formId, num) {
+function storeR(formId, num, hasFile) {
   $("#"+formId).submit(function(e){
     e.preventDefault(e);
 
     var $this = $(this);
     $this.find(":submit").prop('disabled', true);
 
-    $.ajax({
+    var obj = {
        type: 'POST',
        url: $this.attr('action'),
        data: $(this).serialize(),
@@ -92,7 +94,18 @@ function storeR(formId, num) {
           });
         }
       }
-    });
+    };
+
+    if(hasFile) {
+      obj.data = new FormData(this);
+      obj.contentType = false;
+      obj.cache = false;
+      obj.processData = false;
+    }else {
+      obj.data = $(this).serialize();
+    }
+
+    $.ajax(obj);
   });  
 }
 
@@ -123,7 +136,7 @@ function showModalEdit(id, formId, modalId, fields) {
   });
 }
 
-function updateR(formId, num, hasFile=false) {
+function updateR(formId, num, hasFile) {
 
   $("#"+formId).submit(function(e){
     e.preventDefault(e);
@@ -131,13 +144,9 @@ function updateR(formId, num, hasFile=false) {
     var $this = $(this);
     $this.find(":submit").prop('disabled', true);
 
-    $.ajax({
+    var obj = {
        type: 'POST',
        url: $this.attr('action'),
-       data: hasFile ? new FormData(this) : $(this).serialize(),
-       //contentType: hasFile ? false : '',
-       cache: hasFile ? false : '',
-       processData: hasFile ? false : '',
        success: function(data){
         console.log(data)
         if(data.state) {
@@ -168,7 +177,18 @@ function updateR(formId, num, hasFile=false) {
           });
         }
       }
-    });
+    };
+
+    if(hasFile) {
+      obj.data = new FormData(this);
+      obj.contentType = false;
+      obj.cache = false;
+      obj.processData = false;
+    }else {
+      obj.data = $(this).serialize();
+    }
+
+    $.ajax(obj);
   });
 }
 

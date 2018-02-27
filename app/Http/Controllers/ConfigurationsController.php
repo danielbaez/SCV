@@ -55,7 +55,14 @@ class ConfigurationsController extends Controller
         $configuration->document = $request->get('document');
         $configuration->address = $request->get('address');
         $configuration->phone = $request->get('phone');
-        $configuration->logo = $request->get('logo');
+
+        if(!empty($request->file('logo')))
+        {
+            \File::delete(base_path() . '/public/images/'. $configuration->logo);
+            $imageName = $configuration->id.'_'.$request->file('logo')->getClientOriginalName();
+            $request->file('logo')->move(base_path() . '/public/images/', $imageName);
+            $configuration->logo = $imageName;
+        }
 
         $configuration->save();
 

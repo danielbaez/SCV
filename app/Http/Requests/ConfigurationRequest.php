@@ -32,7 +32,7 @@ class ConfigurationRequest extends FormRequest
                 'phone' => 'required'
             ];    
             
-            if($this->hasFile('logo'))
+            if(!empty($this->file('logo')))
             {
                 $rules['logo'] = ['required', 'image', 'max:2048'];
             }

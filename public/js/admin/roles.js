@@ -9,13 +9,13 @@ $(document).ready(function() {
   hiddenModal('modal-rol-create', 'modal-rol-edit');
 
   //***DataTable***
-  dataTableSimple('roles', 'reporte-roles', 'Lista de roles', [3], [0, 1, 2], 'portrait', 'A4', 8);
+  dataTableSimple('roles', 'reporte-roles', 'Lista de roles', [3], [0, 1, 2], 'portrait', 'A4', 8, true, [[0, 'desc']], true);
 
   //create
-  storeR('form-rol-create', num);
+  storeR('form-rol-create', num, false);
   //update
   showModalEdit('rol-edit', 'form-rol-edit', 'modal-rol-edit', [{input: 'text', name: 'name'}, {input: 'checkbox', name: 'state'}]);
-  updateR('form-rol-edit', num);
+  updateR('form-rol-edit', num, false);
   //delete
   showModalDelete('rol-delete', 'form-rol-delete', 'modal-rol-delete');
   destroyR('form-rol-delete');

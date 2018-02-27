@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Rol;
 use DB;
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UserRequest;
 
 class UsersController extends Controller
 {
@@ -76,7 +76,7 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateUserRequest $request)
+    public function store(UserRequest $request)
     {            	
     	//dd($request->all());
         $user = User::create([
@@ -92,7 +92,7 @@ class UsersController extends Controller
         	'phone' => $request->get('phone')
         ]);
 
-        if($request->hasFile('photo'))
+        if(!empty($request->file('photo')))
         {
             $imageName = $user->id.'_'.$request->file('photo')->getClientOriginalName();
 
@@ -139,7 +139,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateUserRequest $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         $user->name = $request->get('name');
         $user->lastname = $request->get('lastname');
@@ -152,7 +152,7 @@ class UsersController extends Controller
         $user->address = $request->get('address');
         $user->phone = $request->get('phone');
 
-        if($request->hasFile('photo'))
+        if(!empty($request->file('photo')))
         {
             //\File::delete(base_path() . '/../public_html/images/usuarios/'. $user->photo);
             \File::delete(base_path() . '/public/images/usuarios/'. $user->photo);

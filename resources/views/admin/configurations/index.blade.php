@@ -37,7 +37,6 @@
             	<div class="table-responsive">
 	            	<table class="table table-bordered table-hover table-width-100" id="configurations">
 				  		<thead>
-				  			<th>ID</th>
 				  			<th>Empresa</th>
 				  			<th>Nro Documento</th>
 				  			<th>Dirección</th>
@@ -47,12 +46,11 @@
 				  		</thead>
 				  		<tbody>
 			  				<tr>
-			  					<td>{{ $configuration->id }}</td>
 			  					<td>{{ $configuration->company }}</td>
 			  					<td>{{ $configuration->document }}</td>
 			  					<td>{{ $configuration->address }}</td>
 			  					<td>{{ $configuration->phone }}</td>
-			  					<td>{{ $configuration->logo }}</td>
+			  					<td><img style="width: 150px; margin: auto" class="img-responsive" src="{{asset('images/'.$configuration->logo)}}"></td>
 			  					</td>
 			  					<td class="text-center">
 			  						<button class="btn btn-md btn-primary" title="Editar" id="configuration-edit" data-url-edit="{{ route('admin.configurations.edit', $configuration->id) }}" data-url-update="{{ route('admin.configurations.update', $configuration->id) }}"><i class="fa fa-edit"></i></button>

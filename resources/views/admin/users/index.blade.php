@@ -75,5 +75,6 @@
 	<script src="{{ asset('js/datatables-export-buttons/buttons.html5.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.colVis.min.js') }}"></script>
+	<script src="{{ asset('js/admin/script.js') }}"></script>
 	<script src="{{ asset('js/admin/users.js') }}"></script>
 @endpush

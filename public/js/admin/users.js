@@ -4,181 +4,22 @@ $(document).ready(function() {
   var num = 0;
   var openedModalCount = 0;
 
-	$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-  });
+  showModal('modal-user-create', 'form-user-create', [{input: 'text', name: 'name'}, {input: 'text', name: 'lastname'}, {input: 'text', name: 'email'}, {input: 'text', name: 'password'}, {input: 'text', name: 'rol_id'}, {input: 'text', name: 'document'}, {input: 'text', name: 'birth_date'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}, {input: 'checkbox', name: 'state'}]);
 
-  $("body").on("click", "#user-edit", function () {
-    var urlUpdate = $(this).data('url-update');
-    $.ajax({
-       type: 'GET',
-       url: $(this).data('url-edit'),
-       data: {},
-       success: function(data) {
-        console.log(data)
-        var formUserEdit = $('#form-user-edit');
-        formUserEdit.find('#name').val(data.name);
-        formUserEdit.find('#lastname').val(data.lastname);
-        formUserEdit.find('#email').val(data.email);
-        formUserEdit.find("input[name='state'][value='"+data.state+"']").prop("checked", true);
-        formUserEdit.find("select[name='rol_id']").val(data.rol_id).prop('selected', true);
-        formUserEdit.find('#document').val(data.document);
-        formUserEdit.find('#birth_date').val(data.birth_date);
-        formUserEdit.find('#address').val(data.address);
-        formUserEdit.find('#phone').val(data.phone);
+  hiddenModal('modal-user-create', 'modal-user-edit');
 
-        formUserEdit.attr('action', urlUpdate);
+  //create
+  storeR('form-user-create', num, true);
+  //update
+  showModalEdit('user-edit', 'form-user-edit', 'modal-user-edit', [{input: 'text', name: 'name'}, {input: 'text', name: 'lastname'}, {input: 'text', name: 'email'}, {input: 'text', name: 'rol_id'}, {input: 'text', name: 'document'}, {input: 'text', name: 'birth_date'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}, {input: 'checkbox', name: 'state'}]);
+  updateR('form-user-edit', num, true);
 
-        $('#modal-user-edit').modal('show');
-       }
-     });
-  });
-
-  $("body").on("click", "#user-delete", function () {
-    var urlDestroy = $(this).data('url');
-    var formUserDelete = $('#form-user-delete');
-    formUserDelete.attr('action', urlDestroy);
-    $('#modal-user-delete').modal('show');
-  });
-
-  $("#form-user-create").submit(function(e){
-    e.preventDefault(e);
-
-    var $this = $(this);
-    $this.find(":submit").prop('disabled', true);
-
-    $.ajax({
-       type: 'POST',
-       url: $this.attr('action'),
-       data: new FormData(this),
-       contentType: false,
-       cache: false,
-       processData:false,
-       success: function(data){
-       	console.log(data)
-        if(data.state) {
-          window.location = data.url;
-        }
-       },
-       error: function (request, status, error) {
-        $this.find(":submit").prop('disabled', false);
-        if('errors' in request.responseJSON) {
-          num++;
-          var errors = request.responseJSON.errors;
-          
-          $.each(errors, function(key, value) {
-            $this.find('#'+key).parent('div').removeClass('num-'+(num-1));
-            $this.find('#'+key).parent('div').addClass('has-error num-'+num);
-            if($this.find('#'+key).next().is('span.help-block')) {
-                $this.find('#'+key).next().find('strong').html(value);
-            }
-            else {
-              $this.find('#'+key).after('<span class="help-block"><strong>'+value+'</strong></span>')
-            }
-          });
-
-          $('.has-error.num-'+(num-1)).each(function(i, obj) {
-              $(obj).removeClass('num-'+(num-1));
-              $(obj).removeClass('has-error');
-              $(obj).find('span').remove();
-          });
-        }
-      }
-    });
-	});
-
-  $("#form-user-edit").submit(function(e){
-    e.preventDefault(e);
-
-    var $this = $(this);
-    $this.find(":submit").prop('disabled', true);
-
-    $.ajax({
-       type: 'POST',
-       url: $this.attr('action'),
-       data: new FormData(this),
-       contentType: false,
-       cache: false,
-       processData:false,
-       success: function(data){
-        console.log(data)
-        if(data.state) {
-          window.location = data.url;
-        }
-       },
-       error: function (request, status, error) {
-        $this.find(":submit").prop('disabled', false);
-        if('errors' in request.responseJSON) {
-          num++;
-          var errors = request.responseJSON.errors;
-          
-          $.each(errors, function(key, value) {
-            $this.find('#'+key).parent('div').removeClass('num-'+(num-1));
-            $this.find('#'+key).parent('div').addClass('has-error num-'+num);
-            if($this.find('#'+key).next().is('span.help-block')) {
-                $this.find('#'+key).next().find('strong').html(value);
-            }
-            else {
-              $this.find('#'+key).after('<span class="help-block"><strong>'+value+'</strong></span>')
-            }
-          });
-
-          $('.has-error.num-'+(num-1)).each(function(i, obj) {
-              $(obj).removeClass('num-'+(num-1));
-              $(obj).removeClass('has-error');
-              $(obj).find('span').remove();
-          });
-        }
-      }
-    });
-  });
-
-  $("#form-user-delete").submit(function(e){
-    e.preventDefault(e);
-
-    var $this = $(this);
-    $this.find(":submit").prop('disabled', true);
-
-    $.ajax({
-       type: 'POST',
-       url: $this.attr('action'),
-       data: new FormData(this),
-       contentType: false,
-       cache: false,
-       processData:false,
-       success: function(data){
-        console.log(data)
-        if(data.state) {
-          window.location = data.url;
-        }
-       },
-       error: function (request, status, error) {
-        $this.find(":submit").prop('disabled', false);
-      }
-    });
-  });
-
-  $("#modal-user-create").on("show.bs.modal", function () {
-    openedModalCount++;
-    if(openedModalCount == 1) {
-      $("#form-user-create").find('#email').val('');
-      $("#form-user-create").find('#password').val('');
-    }
-  });
+  //delete
+  showModalDelete('user-delete', 'form-user-delete', 'modal-user-delete');
+  destroyR('form-user-delete');
 
   $("#modal-user-edit").on("show.bs.modal", function () {
     $("#form-user-edit").find('#password').val('');
-  });
-
-  $("#modal-user-create, #modal-user-edit").on("hidden.bs.modal", function () {
-    $('div.form-group').removeClass('has-error');
-    $('div.form-group').removeClass(function(index,classes){
-      var matches = classes.match(/\bnum-\S+/ig);
-      return (matches) ? matches.join(' ') : '';   
-    });
-    $('span.help-block').remove();
   });
 
   //***DataTable***
