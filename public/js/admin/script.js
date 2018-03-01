@@ -6,7 +6,7 @@ $.ajaxSetup({
 });
 
 //***DataTable***
-function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExport, orientationPdf, pageSize, pageLength, search, order, pagination) {
+function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExport, orientationPdf, pageSize, pageLength, search, order, pagination, customizePdf) {
 
   $('#'+tableId).DataTable({
     order: order,
@@ -20,11 +20,11 @@ function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExpo
       {extend: 'csvHtml5', filename: fileName, exportOptions: {columns: columnsExport}},
       //'print',
       {extend: 'pdfHtml5', orientation: orientationPdf, pageSize: pageSize, title: titleFile, filename: fileName, exportOptions: {columns: columnsExport},
-        customize: function (doc) {
+        customize: customizePdf ? function (doc, customize) {
           //doc.content[1].table.widths = '40%';
           doc.content[1].table.widths = 
           Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-        }
+        } : false
       }
     ],
     "pageLength": pageLength,
@@ -253,4 +253,126 @@ function hiddenModal(modalCreate, modalEdit) {
   });
 }
 
+function overwriteExport(tableId, columnsExport) {
+  jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {    
+    if ( this.context.length ) {
+      var jsonResult = $.ajax({
+          url: $('#'+tableId).data('url'),
+          type: 'GET',
+          data: {
+            action: 'export'
+          },
+          dataType: "json",
+          success: function (result) {
+              console.log(result)
+          },
+          async: false
+      });
+
+      jsonResult.responseJSON.data.forEach(function(part, index, theArray) {
+
+        var newData = [];
+
+        for(var i=0; i<columnsExport.length; i++) {
+          if($.isArray(columnsExport[i].column)) {
+            if(columnsExport[i].condition) {
+              newData.push(theArray[index][columnsExport[i].column[0]][columnsExport[i].column[1]] == columnsExport[i].condition[0] ? columnsExport[i].condition[1] : columnsExport[i].condition[2]);
+            }else{
+              newData.push(theArray[index][columnsExport[i].column[0]][columnsExport[i].column[1]]);
+            }           
+          }else {
+            if(columnsExport[i].condition) {
+              newData.push(theArray[index][columnsExport[i].column] == columnsExport[i].condition[0] ? columnsExport[i].condition[1] : columnsExport[i].condition[2]);
+            }else {
+              newData.push(theArray[index][columnsExport[i].column]);  
+            } 
+          } 
+        }                
+          delete theArray[index];
+          theArray[index] = newData;
+      });
+      return {body: jsonResult.responseJSON.data, header: $("#"+tableId+" thead tr th.r").map(function() { return this.innerHTML; }).get()};
+    }
+  });
+}
+
+function dataTableServerSide(tableId, fileName, titleFile, columnDefs, orientationPdf, pageSize, pageLength, search, order, pagination, columns, customizePdf) {
+
+  $.fn.dataTable.ext.errMode = 'none'; //alert, throw, none
+
+  $('#'+tableId).DataTable({
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+      "url": $('#'+tableId).data('url'),
+      "data": {action: 'ajax'}
+    },
+    "columns": columns,
+    order: order,
+    "columnDefs": columnDefs,
+    dom: 'Bfrtip',
+        buttons: [
+            {extend: 'copyHtml5', className: 'hidden'},
+            {extend: 'excelHtml5', className: 'hidden', title: titleFile, filename: fileName},
+            {extend: 'csvHtml5', className: 'hidden', filename: fileName},
+            //'print',
+            /*{extend: 'pdfHtml5', className: 'hidden', orientation: orientationPdf, pageSize: pageSize, title: titleFile, filename: fileName
+            }*/
+            {extend: 'pdfHtml5', className: 'hidden', orientation: orientationPdf, pageSize: pageSize, title: titleFile, filename: fileName,
+              customize: customizePdf ? function (doc, customize) {
+                //doc.content[1].table.widths = '40%';
+                doc.content[1].table.widths = 
+                Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+              } : false
+            }
+        ],
+    "pageLength": pageLength,
+    "searching": search,
+    "paging": pagination,
+    "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron registros",
+            //"info": "Página _PAGE_ de _PAGES_",
+            "info": "",
+            //"infoEmpty": "No hay registros disponibles",
+            "infoEmpty": "",
+            //"infoFiltered": "(filtrado de _MAX_ total registros)",
+            "infoFiltered": "",
+            "loadingRecords": "Cargando...",
+            "search": "Buscar:",
+            "processing": "Procesando...",
+            "paginate": {
+            "first":      "Primero",
+            "last":       "último",
+            "next":       "Siguiente",
+            "previous":   "Anterior"
+        },
+        },
+        
+  });
+}
+
+function overwriteButtons() {
+  $('.dt-buttons.btn-group').append('<button type="button" onclick="fnAction(\'excel\');" class="btn btn-default">Excel</button><button type="button" onclick="fnAction(\'csv\');" class="btn btn-default">CSV</button><button type="button" onclick="fnAction(\'pdf\');" class="btn btn-default">PDF</button>').addClass('m-l-1')
+}
+
+function fnAction(action) {
+  $('#modal-export').modal({
+    backdrop: 'static',
+    keyboard: false
+  });
+
+  setTimeout(function() {
+    $('.buttons-'+action).trigger('click');
+
+  }, 1000)
+
+  var aa = setInterval(function(){
+    console.log(3232)
+    if(!$('.buttons-'+action).hasClass('processing')) {
+      $('#modal-export').modal('hide');
+      clearInterval(aa);
+    }       
+  }, 1000);
+}
   

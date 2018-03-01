@@ -9,7 +9,7 @@ $(document).ready(function() {
   hiddenModal('modal-voucher-create', 'modal-voucher-edit');
 
   //***DataTable***
-  dataTableSimple('vouchers', 'reporte-comprobantes', 'Lista de comprobantes', [6], [0, 1, 2, 3, 4, 5], 'portrait', 'A4', 8, true, [[0, 'desc']], true);
+  dataTableSimple('vouchers', 'reporte-comprobantes', 'Lista de comprobantes', [6], [0, 1, 2, 3, 4, 5], 'portrait', 'A4', 8, true, [[0, 'desc']], true, true);
 
   //create
   storeR('form-voucher-create', num, false);

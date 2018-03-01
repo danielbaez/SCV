@@ -24,7 +24,7 @@ $(document).ready(function() {
 
   //***DataTable***
 
-	jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
+	/*jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
 		
     	if ( this.context.length ) {
         var jsonResult = $.ajax({
@@ -39,23 +39,6 @@ $(document).ready(function() {
             },
             async: false
         });
-
-        //console.log(jsonResult);
-        //console.log(jsonResult.responseJSON.data);
-
-        /*jsonResult.responseJSON.data.forEach(function(part, index, theArray) {
-          theArray[index]['rol_id'] = theArray[index]['rol']['name'];
-          theArray[index]['state'] = theArray[index]['state'] == 1 ? 'Activo' : 'Inactivo';
-          delete theArray[index]["rol"];
-        });*/
-
-        /*jsonResult.responseJSON.data.forEach(function(part, index, theArray) {
-
-          theArray[index][5] = theArray[index][7][1];
-          theArray[index][6] = theArray[index][6] == 1 ? 'Activo' : 'Inactivo';
-          theArray[index].splice(7, 1);//eliminando
-          console.log(theArray)
-        });*/
 
         jsonResult.responseJSON.data.forEach(function(part, index, theArray) {
 
@@ -78,11 +61,26 @@ $(document).ready(function() {
 
         return {body: jsonResult.responseJSON.data, header: $("#users thead tr th.r").map(function() { return this.innerHTML; }).get()};
     	}
-	});
+	});*/
 
-	$.fn.dataTable.ext.errMode = 'none'; //alert, throw, none
+  columnsExport = [
+    {column: 'id'},
+    {column: 'name'},
+    {column: 'lastname'},
+    {column: 'email'},
+    {column: 'document'},
+    {column: 'address'},
+    {column: 'birth_date'},
+    {column: 'phone'},
+    {column: ['rol', 'name']},
+    {column: 'state', condition: [1, 'Activo', 'Inactivo']}
+  ];
 
-	$('#users').DataTable({
+  overwriteExport('users', columnsExport);
+
+	//$.fn.dataTable.ext.errMode = 'none'; //alert, throw, none
+
+	/*$('#users').DataTable({
 		"processing": true,
 		"serverSide": true,
 		"ajax": {
@@ -159,13 +157,54 @@ $(document).ready(function() {
 		    },
         },
         
-	});
+	});*/
 
-	$('.dt-buttons.btn-group').append('<button type="button" onclick="fnAction(\'excel\');" class="btn btn-default">Excel</button><button type="button" onclick="fnAction(\'csv\');" class="btn btn-default">CSV</button><button type="button" onclick="fnAction(\'pdf\');" class="btn btn-default">PDF</button>').addClass('m-l-1')
+  var columnDefs = [
+       { className: "hide_column", "targets": [5] },
+       { className: "hide_column", "targets": [6] },
+       { className: "hide_column", "targets": [7] },
+       { className: "text-center", "targets": [9] },
+       { className: "text-center", "targets": [10], orderable: false },
+       { className: "hide_column", "targets": [11] },
+       { className: "text-center", "targets": [12], orderable: false },
+    ];
+
+  var columns = [
+    {data: 'id'},
+    {data: 'name'},
+    {data: 'lastname'},
+    {data: 'email'},
+    {data: 'document'},
+    {data: 'address'},
+    {data: 'birth_date'},
+    {data: 'phone'},
+    {data: 'rol.name'},
+    {data: 'state', visible: true, render: function ( data, type, full, meta ) {
+        return data == 1 ? "<span class='badge alert-success'>Activo</span>" : "<span class='badge alert-danger'>Inactivo</span>";
+      }
+    },
+    {data: 'photo', visible: true, render: function ( data, type, full, meta ) {
+        var url = $('#users').data('url-image')+'/'+data;
+        return data ? "<img class='img-responsive' style='border-radius: 50%; width: 42px; height: 42px;' src='"+url+"'>" : '';
+      }
+    },
+    {data: 'rol.name'},
+    {data: 'action', visible: true, render: function ( data, type, full, meta ) {
+        var url = data.split(',');
+        return '<button class="btn btn-md btn-primary" title="Editar" id="user-edit" data-url-edit="'+url[0]+'" data-url-update="'+url[1]+'"><i class="fa fa-edit"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="user-delete" data-url="'+url[2]+'"><i class="fa fa-ban"></i></button>';
+      }
+    }
+  ];
+
+  dataTableServerSide('users', 'lista-usuarios', 'Lista de usuarios', columnDefs, 'landscape', 'A4', 8, true, [ [0, 'desc'] ], true, columns, false);
+
+	//$('.dt-buttons.btn-group').append('<button type="button" onclick="fnAction(\'excel\');" class="btn btn-default">Excel</button><button type="button" onclick="fnAction(\'csv\');" class="btn btn-default">CSV</button><button type="button" onclick="fnAction(\'pdf\');" class="btn btn-default">PDF</button>').addClass('m-l-1')
+
+  overwriteButtons();
 
 });
 
-function fnAction(action) {
+/*function fnAction(action) {
 	$('#modal-export').modal({
 	  backdrop: 'static',
 	  keyboard: false
@@ -183,4 +222,4 @@ function fnAction(action) {
 			clearInterval(aa);
 		}				
 	}, 1000);
-}
+}*/

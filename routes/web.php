@@ -42,7 +42,7 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 	
 	Route::get('dashboard', 'HomeController@index')->name('admin.dashboard');
 
-	Route::get('usuarios/ajaxUsers', 'UsersController@ajaxUsers')->name('admin.users.ajaxUsers');
+	Route::get('users/ajaxUsers', 'UsersController@ajaxUsers')->name('admin.users.ajaxUsers');
 	Route::resource('users', 'UsersController', 
 		['parameters' => ['users' => 'user'],
 		 'as' => 'admin'
@@ -64,6 +64,21 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 		 ]
 		]
 	);
+
+	Route::get('categories/ajaxCategories', 'CategoriesController@ajaxCategories')->name('admin.categories.ajaxCategories');
+	Route::resource('categories', 'CategoriesController', ['as' => 'admin']);
+
+	Route::get('brands/ajaxBrands', 'BrandsController@ajaxBrands')->name('admin.brands.ajaxBrands');
+	Route::resource('brands', 'BrandsController', ['as' => 'admin']);
+
+	Route::get('presentations/ajaxPresentations', 'PresentationsController@ajaxPresentations')->name('admin.presentations.ajaxPresentations');
+	Route::resource('presentations', 'PresentationsController', ['as' => 'admin']);
+
+	Route::get('products/ajaxProducts', 'ProductsController@ajaxProducts')->name('admin.products.ajaxProducts');
+	Route::resource('products', 'ProductsController', ['as' => 'admin']);
+
+	Route::get('providers/ajaxProviders', 'ProvidersController@ajaxProviders')->name('admin.providers.ajaxProviders');
+	Route::resource('providers', 'ProvidersController', ['as' => 'admin']);
 
 });
 

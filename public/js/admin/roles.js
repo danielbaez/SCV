@@ -9,7 +9,7 @@ $(document).ready(function() {
   hiddenModal('modal-rol-create', 'modal-rol-edit');
 
   //***DataTable***
-  dataTableSimple('roles', 'reporte-roles', 'Lista de roles', [3], [0, 1, 2], 'portrait', 'A4', 8, true, [[0, 'desc']], true);
+  dataTableSimple('roles', 'reporte-roles', 'Lista de roles', [3], [0, 1, 2], 'portrait', 'A4', 8, true, [[0, 'desc']], true, true);
 
   //create
   storeR('form-rol-create', num, false);

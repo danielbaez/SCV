@@ -7,7 +7,8 @@
 
 @section('header')
 	<h1>
-		CONFIGURACIÓN
+		CATEGORÍAS <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#modal-category-create">
+		<i class="fa fa-plus"></i> CREAR</button>
 	</h1>
 @endsection
 @section('content')
@@ -29,38 +30,21 @@
 		</div>
 	</div>
 
-	@include('admin.configurations.edit')
+	@include('admin.categories.create')
+	@include('admin.categories.edit')
+	@include('admin.categories.delete')
 
     <div class="col-xs-12">
     	<div class="box box-primary">
             <div class="box-body">
             	<div class="table-responsive">
-	            	<table class="table table-bordered table-hover table-width-100" id="configurations">
+	            	<table class="table table-bordered table-hover table-width-100" id="categories" data-url="{{ route('admin.categories.ajaxCategories') }}" data-url-image="{{asset('images/usuarios')}}">
 				  		<thead>
-				  			<th>Empresa</th>
-				  			<th>Nro Documento</th>
-				  			<th>Dirección</th>
-				  			<th>Teléfono</th>
-				  			<th>Logo</th>
-				  			<th>Acción</th>
+				  			<th class="r">ID</th>
+				  			<th class="r">Nombre</th>
+				  			<th class="r">Estado</th>
+				  			<th class="">Acciones</th>
 				  		</thead>
-				  		<tbody>
-			  				<tr>
-			  					<td>{{ $configuration->company }}</td>
-			  					<td>{{ $configuration->document }}</td>
-			  					<td>{{ $configuration->address }}</td>
-			  					<td>{{ $configuration->phone }}</td>
-			  					<td>
-			  						@if($configuration->logo)
-			  							<img style="width: 150px; margin: auto" class="img-responsive" src="{{asset('images/'.$configuration->logo)}}">
-			  						@endif
-			  					</td>
-			  					</td>
-			  					<td class="text-center">
-			  						<button class="btn btn-md btn-primary" title="Editar" id="configuration-edit" data-url-edit="{{ route('admin.configurations.edit', $configuration->id) }}" data-url-update="{{ route('admin.configurations.update', $configuration->id) }}"><i class="fa fa-edit"></i></button>
-			  					</td>
-			  				</tr>
-				  		</tbody>
 				  	</table>
 				</div>
             </div>
@@ -83,5 +67,5 @@
 	<script src="{{ asset('js/datatables-export-buttons/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.colVis.min.js') }}"></script>
 	<script src="{{ asset('js/admin/script.js') }}"></script>
-	<script src="{{ asset('js/admin/configurations.js') }}"></script>
+	<script src="{{ asset('js/admin/categories.js') }}"></script>
 @endpush
