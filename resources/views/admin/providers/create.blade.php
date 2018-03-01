@@ -34,7 +34,7 @@
 			                  <input name="document" type="text" class="form-control" id="document" placeholder="Nro de documento">
 			                </div>
 			                <div class="form-group">
-			                  <label for="phone">Teléfono</label>
+			                  <label for="phone">*Teléfono</label>
 			                  <input name="phone" type="text" class="form-control" id="phone" placeholder="Teléfono">
 			                </div>
 			                <div class="form-group">

@@ -1,41 +1,37 @@
-<div class="modal fade" id="modal-provider-edit">
+<div class="modal fade" id="modal-customer-edit">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header modal-header-form">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  	<span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Editar Proveedor</h4>
+				<h4 class="modal-title">Editar Cliente</h4>
 			</div>
-			<form method="POST" id="form-provider-edit" action="" autocomplete="off">
+			<form method="POST" id="form-customer-edit" action="" autocomplete="off">
 				{{ method_field('PUT') }}
 				<input type="hidden" name="action" value="update">
 				<div class="modal-body">
 					<div class="row">				            
-		              	<div class="col-xs-6">		              		
-			                <div class="form-group">
-			                  <label for="business_name">*Razón Social</label>
-			                  <input name="business_name" type="text" class="form-control" id="business_name" placeholder="Razón Social">
-			                </div>
+		              	<div class="col-xs-6">
+		              		<div class="form-group">
+			                  <label for="name">*Nombre</label>
+			                  <input name="name" type="text" class="form-control" id="name" placeholder="Nombre">
+			                </div>	
 			                <div class="form-group">
 			                  <label for="lastname">*Apellido</label>
 			                  <input name="lastname" type="text" class="form-control" id="lastname" placeholder="Apellido">
 			                </div>
 			                <div class="form-group">
-			                  <label for="address">*Dirección</label>
-			                  <input name="address" type="text" class="form-control" id="address" placeholder="Dirección">
-			                </div>		                
+			                  <label for="document">*Nro de documento</label>
+			                  <input name="document" type="text" class="form-control" id="document" placeholder="Nro de documento">
+			                </div>			                		                
 		              	</div>
 		              	<div class="col-xs-6">
 			                <div class="form-group">
-			                  <label for="name">*Nombre</label>
-			                  <input name="name" type="text" class="form-control" id="name" placeholder="Nombre">
-			                </div>
+			                  <label for="address">Dirección</label>
+			                  <input name="address" type="text" class="form-control" id="address" placeholder="Dirección">
+			                </div>			                
 			                <div class="form-group">
-			                  <label for="document">*Nro de documento</label>
-			                  <input name="document" type="text" class="form-control" id="document" placeholder="Nro de documento">
-			                </div>
-			                <div class="form-group">
-			                  <label for="phone">*Teléfono</label>
+			                  <label for="phone">Teléfono</label>
 			                  <input name="phone" type="text" class="form-control" id="phone" placeholder="Teléfono">
 			                </div>
 			                <div class="form-group">

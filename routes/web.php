@@ -80,6 +80,9 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 	Route::get('providers/ajaxProviders', 'ProvidersController@ajaxProviders')->name('admin.providers.ajaxProviders');
 	Route::resource('providers', 'ProvidersController', ['as' => 'admin']);
 
+	Route::get('customers/ajaxCustomers', 'CustomersController@ajaxCustomers')->name('admin.customers.ajaxCustomers');
+	Route::resource('customers', 'CustomersController', ['as' => 'admin']);
+
 });
 
 
