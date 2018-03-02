@@ -61,7 +61,7 @@
     </ul>
   </li>
 
-  <li class="treeview {{ setActiveRoute(['admin.providers.index', 'admin.brands.index']) }}">
+  <li class="treeview {{ setActiveRoute(['admin.providers.index', 'admin.purchases.index']) }}">
     <a href="#"><i class="fa fa-users"></i> <span>Compras</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
@@ -71,8 +71,8 @@
       <li class="{{ setActiveRoute('admin.providers.index') }}">
         <a href="{{ route('admin.providers.index') }}"><i class="fa fa-users"></i> Proveedores</a>
       </li>
-      <li class="{{ setActiveRoute('admin.brands.index') }}">
-        <a href="{{ route('admin.brands.index') }}"><i class="fa fa-user"></i> Compras</a>
+      <li class="{{ setActiveRoute('admin.purchases.index') }}">
+        <a href="{{ route('admin.purchases.index') }}"><i class="fa fa-user"></i> Compras</a>
       </li>
     </ul>
   </li>

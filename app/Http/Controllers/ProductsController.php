@@ -170,4 +170,22 @@ class ProductsController extends Controller
 
         return response()->json(['state' => true, 'url' => route('admin.products.index')]);
     }
+
+    public function purchaseAutocomplete(Request $request)
+    {
+        $action = $request->get('action');
+        if($action == 'product-search')
+        {
+            $search = $request->get('query');
+            $products = Product::where('name', 'LIKE', "%{$search}%")->select('id', 'name')->get();    
+        }
+        elseif($action == 'product-detail')
+        {
+            $search = $request->get('id_product');
+            //$products = Product::find($search);
+            $products = Product::with('category')->with('brand')->with('presentation')->get();
+            $products = $products->toJson();    
+        }
+        return $products;
+    }
 }

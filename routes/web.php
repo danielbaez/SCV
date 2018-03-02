@@ -75,6 +75,7 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 	Route::resource('presentations', 'PresentationsController', ['as' => 'admin']);
 
 	Route::get('products/ajaxProducts', 'ProductsController@ajaxProducts')->name('admin.products.ajaxProducts');
+	Route::get('products/purchase/autocomplete', 'ProductsController@purchaseAutocomplete')->name('admin.products.purchase.autocomplete');	
 	Route::resource('products', 'ProductsController', ['as' => 'admin']);
 
 	Route::get('providers/ajaxProviders', 'ProvidersController@ajaxProviders')->name('admin.providers.ajaxProviders');
@@ -82,6 +83,9 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 
 	Route::get('customers/ajaxCustomers', 'CustomersController@ajaxCustomers')->name('admin.customers.ajaxCustomers');
 	Route::resource('customers', 'CustomersController', ['as' => 'admin']);
+
+	Route::get('purchases/ajaxPurchases', 'PurchasesController@ajaxPurchases')->name('admin.purchases.ajaxPurchases');
+	Route::resource('purchases', 'PurchasesController', ['as' => 'admin']);
 
 });
 
