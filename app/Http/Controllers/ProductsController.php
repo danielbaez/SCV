@@ -183,7 +183,7 @@ class ProductsController extends Controller
         {
             $search = $request->get('id_product');
             //$products = Product::find($search);
-            $products = Product::with('category')->with('brand')->with('presentation')->get();
+            $products = Product::with('category')->with('brand')->with('presentation')->where('products.id', $search)->get();
             $products = $products->toJson();    
         }
         return $products;

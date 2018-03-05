@@ -58,12 +58,12 @@
 					<div class="col-xs-5">
 						<div class="form-group">
 				            <label for="product">*Producto</label>
-			                <input name="product" type="text" class="form-control" id="autocomplete-producto-compra" placeholder="Busca por nombre de producto" data-url="{{ route('admin.products.purchase.autocomplete') }}">
+			                <input name="product" type="text" class="form-control" id="autocomplete-product-purchase" placeholder="Busca por nombre de producto" data-url="{{ route('admin.products.purchase.autocomplete') }}">
 			            </div>
 					</div>
 					<div class="col-xs-4 text-center">
 						<div style="padding: 10px; background: green; color: white">
-							<span style="font-size: 25px">S/ 0.00</span>
+							<span style="font-size: 25px">S/ <span id="total">0.00</span></span>
 						</div>
 					</div>
 				</div>
@@ -80,7 +80,7 @@
 				  			<th class="text-center">Marca</th>
 				  			<th class="text-center">Presentación</th>
 				  			<th class="text-center">Cantidad</th>
-				  			<th class="text-center">Precio Venta</th>
+				  			<th class="text-center">Precio Compra</th>
 				  			<th class="text-cente">Eliminar</th>
 				  		</thead>
 				  		<tbody id="tbody-products">

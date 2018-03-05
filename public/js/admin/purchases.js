@@ -72,34 +72,31 @@ $(document).ready(function() {
     $('#div-purchase-create').show();
   });
 
+  var id = '#autocomplete-product-purchase';
+  var search = $(id);
 
-  var optionsAutocompleteCompra = {
+  var options = {
 
     url: function() {
-      return $('#autocomplete-producto-compra').attr('data-url');
+      return search.attr('data-url');
     },
 
-    /*xmlElementName: 'name',
-    xmlElementCode: 'id',*/
-
     getValue: function(element) {
-      //return element.value;
       return element.name;
-      //AE3EFE
     },
 
     ajaxSettings: {
       dataType: "json",
       method: "GET",
       data: {
-        dataType: "json"
+        //dataType: "json"
       },
       cache: false
     },
 
     preparePostData: function(data) {
       data.action = 'product-search';
-      data.query = $("#autocomplete-producto-compra").val();
+      data.query = search.val();
       return data;
     },
 
@@ -111,15 +108,15 @@ $(document).ready(function() {
     }, */
 
       onClickEvent: function() {
-        var value = $("#autocomplete-producto-compra").getSelectedItemData();
+        var value = search.getSelectedItemData();
         console.log(value);
-        addProductoInTableCompra('product-detail', value.id, '#autocomplete-producto-compra');
+        addProduct('product-detail', value.id, id);
       } ,
 
       onKeyEnterEvent: function() {
-        var value = $("#autocomplete-producto-compra").getSelectedItemData();
+        var value = search.getSelectedItemData();
         console.log(value);
-        addProductoInTableCompra('product-detail', value.id, '#autocomplete-producto-compra');
+        addProduct('product-detail', value.id, id);
       } ,
 
       onHideListEvent: function(data){
@@ -130,10 +127,10 @@ $(document).ready(function() {
     //requestDelay: 500
   };
 
-  $("#autocomplete-producto-compra").easyAutocomplete(optionsAutocompleteCompra);
+  search.easyAutocomplete(options);
   $('div.easy-autocomplete').removeAttr('style');
 
-  function addProductoInTableCompra(action, id_producto, id) {
+  function addProduct(action, id_producto, id) {
     $.ajax({
         data: {id_product: id_producto, action: action},
         type: "GET",
@@ -152,11 +149,12 @@ $(document).ready(function() {
           html += '<td>'+response.category.name+'</td>';
           html += '<td>'+response.brand.name+'</td>';
           html += '<td>'+response.presentation.name+'</td>';
-          html += '<td class="text-center"><input type="number" name="quantity" style="width: 35%; min-width: 60px;"></td>';
-          html += '<td class="text-center">'+response.sale_price+'</td>';
+          html += '<td class="text-center"><input type="number" name="quantity" value="1" style="width: 25%; min-width: 60px;"></td>';
+          html += '<td class="text-center" id="importe-'+response.id+'"><input type="number" name="purchase_price" value="" style="width: 35%; min-width: 60px;"></td>';
           html += '<td class="text-center"><i style="color:red" class="product-delete fa fa-times fa-2x" aria-hidden="true"></i></td>';
         html += '</tr>';
         $('#tbody-products').append(html);
+        addPrice(response.sale_price);
       }
 
       /*$('#autocomplete-producto').val('');
@@ -190,8 +188,44 @@ $(document).ready(function() {
     });
   }
 
+  function addPrice(price) {
+    var price = parseFloat(price);
+    var total = $('#total').html();
+    total = parseFloat(total);
+    var f = (total+price).toFixed(2);
+    $('#total').html(f);
+  }
+
+  function removePrice(price) {
+    var price = parseFloat(price);
+    var total = $('#total').html();
+    total = parseFloat(total);
+    var f = (total-price).toFixed(2);
+    $('#total').html(f);
+  }
+
+  $('body').on('propertychange input', 'input[type="number"]', forceNumeric);
+
+  function forceNumeric(){
+    var $input = $(this);
+    var val = $input.val().replace(/\D|^0+/g,'');
+    $input.val(val);
+
+    var total = 0;
+    $("td[id^='importe-']").each(function() {
+      var quantity = $(this).parent().find("td input[name='quantity']").val();
+      var importe = parseFloat($(this).html());
+      total += quantity*importe;
+    });
+    $('#total').html(total.toFixed(2));
+  }
+
   $("body").on("click", ".product-delete", function () {
+    
+    var importe = $(this).parent().parent().find("td[id^='importe-']").html();
+    alert(importe)
     $(this).parent().parent().remove();
+    removePrice(importe);
     /*var importe = $(this).parent().parent().find("td[id^='importe-']").html();
     var total = $('#div-importe-final').html();
     total = total - importe;
