@@ -8,11 +8,13 @@
 
 @section('header')
 	<h1 id="header-purchases-index">
-		COMPRAS <button type="button" class="btn btn-success pull-right" id="form-purchase-create">
-		<i class="fa fa-plus"></i> CREAR</button>
+		{{-- COMPRAS <button type="button" class="btn btn-success pull-right" id="form-purchase-create">
+		<i class="fa fa-plus"></i> CREAR</button> --}}
+		COMPRAS <a href="{{ route('admin.purchases.create') }}" class="btn btn-success pull-right" id="form-purchase-create">
+		<i class="fa fa-plus"></i> CREAR</a>
 	</h1>
 	<h1 id="header-purchases-create" style="display: none">
-		AGREGAR COMPRAS</button>
+		AGREGAR COMPRA</button>
 	</h1>
 @endsection
 @section('content')
@@ -60,7 +62,7 @@
     	</div>
     </div>
 
-    @include('admin.purchases.create')
+    {{-- @include('admin.purchases.create') --}}
 
 </div>
 

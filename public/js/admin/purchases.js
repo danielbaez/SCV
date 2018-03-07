@@ -65,12 +65,12 @@ $(document).ready(function() {
   overwriteButtons();
 
 
-  $('#form-purchase-create').on('click', function() {
+  /*$('#form-purchase-create').on('click', function() {
     $('#header-purchases-index').hide();
     $('#header-purchases-create').show();
     $('#div-purchase-index').hide();
     $('#div-purchase-create').show();
-  });
+  });*/
 
   var id = '#autocomplete-product-purchase';
   var search = $(id);
@@ -149,12 +149,13 @@ $(document).ready(function() {
           html += '<td>'+response.category.name+'</td>';
           html += '<td>'+response.brand.name+'</td>';
           html += '<td>'+response.presentation.name+'</td>';
-          html += '<td class="text-center"><input type="number" name="quantity" value="1" style="width: 25%; min-width: 60px;"></td>';
-          html += '<td class="text-center" id="importe-'+response.id+'"><input type="number" name="purchase_price" value="" style="width: 35%; min-width: 60px;"></td>';
+          html += '<input type="hidden" name="product_id[]" value="'+response.id+'">';
+          html += '<td class="text-center" id="quantity-'+response.id+'"><input type="text" class="form-control allownumericwithoutdecimal" name="quantity[]" value="1" style="width: 30%; min-width: 60px; margin: auto"></td>';
+          html += '<td class="text-center" id="purchase_price-'+response.id+'"><input type="text" class="form-control allownumericwithdecimal" name="purchase_price[]" value="'+response.purchase_price+'" style="width: 40%; min-width: 60px; margin: auto"></td>';
           html += '<td class="text-center"><i style="color:red" class="product-delete fa fa-times fa-2x" aria-hidden="true"></i></td>';
         html += '</tr>';
         $('#tbody-products').append(html);
-        addPrice(response.sale_price);
+        addPrice(response.purchase_price);
       }
 
       /*$('#autocomplete-producto').val('');
@@ -189,6 +190,7 @@ $(document).ready(function() {
   }
 
   function addPrice(price) {
+    $('.div-save-purchase').show();
     var price = parseFloat(price);
     var total = $('#total').html();
     total = parseFloat(total);
@@ -202,41 +204,97 @@ $(document).ready(function() {
     total = parseFloat(total);
     var f = (total-price).toFixed(2);
     $('#total').html(f);
+
+    if($('#tbody-products tr').length == 0) {
+      $('.div-save-purchase').hide();
+    }
+
   }
 
-  $('body').on('propertychange input', 'input[type="number"]', forceNumeric);
-
-  function forceNumeric(){
-    var $input = $(this);
-    var val = $input.val().replace(/\D|^0+/g,'');
-    $input.val(val);
+  $('body').on("keypress keyup blur", '.allownumericwithdecimal', function (event) {
+    $(this).val($(this).val().replace(/[^0-9\.]/g,''));
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
 
     var total = 0;
-    $("td[id^='importe-']").each(function() {
-      var quantity = $(this).parent().find("td input[name='quantity']").val();
-      var importe = parseFloat($(this).html());
-      total += quantity*importe;
+    $("td[id^='purchase_price-']").each(function() {
+      var quantity = $(this).parent().find("td input[name^='quantity']").val();
+      var purchase_price = parseFloat($(this).find('input[name^="purchase_price"]').val());
+      total += quantity*purchase_price;
     });
     $('#total').html(total.toFixed(2));
-  }
+  });
 
-  $("body").on("click", ".product-delete", function () {
-    
-    var importe = $(this).parent().parent().find("td[id^='importe-']").html();
-    alert(importe)
+  $('body').on("keypress keyup blur", '.allownumericwithoutdecimal', function (event) {    
+    $(this).val($(this).val().replace(/[^\d].+/, ""));
+    if ((event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
+
+    var total = 0;
+    $("td[id^='purchase_price-']").each(function() {
+      var quantity = $(this).parent().find("td input[name^='quantity']").val();
+      var purchase_price = parseFloat($(this).find('input[name^="purchase_price"]').val());
+      total += quantity*purchase_price;
+    });
+    $('#total').html(total.toFixed(2));
+  });
+
+  $("body").on("click", ".product-delete", function () {    
+    var purchase_price = $(this).parent().parent().find("td[id^='purchase_price-']").find('input[name^="purchase_price"]').val();
+    var quantity = $(this).parent().parent().find("td[id^='quantity-']").find('input[name^="quantity"]').val();
     $(this).parent().parent().remove();
-    removePrice(importe);
-    /*var importe = $(this).parent().parent().find("td[id^='importe-']").html();
-    var total = $('#div-importe-final').html();
-    total = total - importe;
-    $('#div-importe-final').html(total.toFixed(2));
-    $('input[name="total"]').val(total.toFixed(2));
-    $(this).parent().parent().remove();
-    calcularImp();
-    if($("input[name='monto_recibido']").val() != ''){
-      var t = $("input[name='monto_recibido']");
-      t.trigger('keyup');
-    }*/
+    removePrice(purchase_price*quantity);
+  });
+
+  $(document).on("keypress", "form", function(event) { 
+    return event.keyCode != 13;
+  });
+
+  $("#form-purchase-store").submit(function(e){
+    e.preventDefault(e);
+
+    var $this = $(this);
+    $this.find(":submit").prop('disabled', true);
+
+    var obj = {
+       type: 'POST',
+       url: $this.attr('action'),
+       success: function(data){
+        console.log(data)
+        if(data.state) {
+          window.location = data.url;
+        }
+       },
+       error: function (request, status, error) {
+        $this.find(":submit").prop('disabled', false);
+        if('errors' in request.responseJSON) {
+          num++;
+          var errors = request.responseJSON.errors;
+          
+          $.each(errors, function(key, value) {
+            $this.find('#'+key).parent('div').removeClass('num-'+(num-1));
+            $this.find('#'+key).parent('div').addClass('has-error num-'+num);
+            if($this.find('#'+key).next().is('span.help-block')) {
+                $this.find('#'+key).next().find('strong').html(value);
+            }
+            else {
+              $this.find('#'+key).after('<span class="help-block"><strong>'+value+'</strong></span>')
+            }
+          });
+
+          $('.has-error.num-'+(num-1)).each(function(i, obj) {
+              $(obj).removeClass('num-'+(num-1));
+              $(obj).removeClass('has-error');
+              $(obj).find('span').remove();
+          });
+        }
+      }
+    };
+
+    obj.data = $(this).serialize();
+    $.ajax(obj);
   });
 
 });

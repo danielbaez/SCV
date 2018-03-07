@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Purchase;
+use App\Purchase_detail;
+use App\Product;
 use App\Provider;
 use App\Voucher;
 use App\Http\Requests\PurchaseRequest;
@@ -57,7 +59,9 @@ class PurchasesController extends Controller
      */
     public function create()
     {
-        //
+        $providers = Provider::all();
+        $vouchers = Voucher::all();
+        return view('admin.purchases.create', compact('providers', 'vouchers'));
     }
 
     /**
@@ -66,9 +70,48 @@ class PurchasesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PurchaseRequest $request)
     {
-        //
+        //dd($request->all());
+
+        $product_id = $request->get('product_id');
+        $quantity = $request->get('quantity');
+        $purchase_price = $request->get('purchase_price');
+        $total = 0;
+
+        foreach ($product_id as $key => $value) {
+            $total+= $quantity[$key] * $purchase_price[$key];
+        }
+
+        $purchase = Purchase::create([
+            'user_id' => auth()->user()->id,
+            'provider_id' => $request->get('provider_id'),
+            'voucher' => $request->get('voucher'),
+            'voucher_serie' => $request->get('voucher_serie'),
+            'voucher_number' => $request->get('voucher_number'),
+            'total' => $total,
+            'date' => $request->get('date'),
+            'state' => 1
+        ]);
+
+        $purchase->save();
+
+        foreach ($product_id as $key => $value) {
+            Purchase_detail::create([
+                'purchase_id' => $purchase->id,
+                'product_id' => $value,
+                'quantity' => $quantity[$key],
+                'price' => $purchase_price[$key]
+            ]);
+            $product = Product::find($value);
+            $product->sale_price = $purchase_price[$key];
+            $product->stock += $quantity[$key];
+            $product->save();
+        }
+
+        $request->session()->flash('flash', 'Se ha creado la compra correctamente');
+
+        return response()->json(['state' => true, 'url' => route('admin.purchases.index')]);
     }
 
     /**

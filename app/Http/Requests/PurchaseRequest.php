@@ -13,7 +13,7 @@ class PurchaseRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,21 @@ class PurchaseRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+        if($this->get('action') == 'store')
+        {
+            $rules = [
+                'voucher' => 'required',
+                'provider_id' => 'required',
+                'voucher_serie' => 'required',
+                'voucher_number' => 'required',
+                'date' => 'required'
+            ];   
+        }
+        elseif($this->get('action') == 'update')
+        {
+             
+        }
+
+        return $rules;
     }
 }
