@@ -53,7 +53,7 @@
 						</div>
 						<div class="col-xs-2">
 							<div class="form-group">
-					            <label for="voucher_number">*Nro Comprobante</label>
+					            <label for="voucher_number">*Nro de Venta</label>
 				                <input name="voucher_number" type="text" class="form-control" id="voucher_number" placeholder="Nro de comprobante">
 				            </div>
 						</div>
@@ -100,7 +100,7 @@
 					  			<th class="text-center">Marca</th>
 					  			<th class="text-center">Presentación</th>
 					  			<th class="text-center">Cantidad</th>
-					  			<th class="text-center">Precio Compra</th>
+					  			<th class="text-center">Precio</th>
 					  			<th class="text-cente">Eliminar</th>
 					  		</thead>
 					  		<tbody id="tbody-products">

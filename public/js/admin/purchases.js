@@ -4,22 +4,9 @@ $(document).ready(function() {
   var num = 0;
   var openedModalCount = 0;
 
-  showModal('modal-purchase-create', 'form-purchase-create', [{input: 'text', name: 'business_name'}, {input: 'text', name: 'name'}, {input: 'text', name: 'lastname'}, {input: 'text', name: 'document'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}, {input: 'checkbox', name: 'state'}]);
-
-  hiddenModal('modal-purchase-create', 'modal-purchase-edit');
-
-  //create
-  storeR('form-purchase-create', num, false);
-  //update
-  showModalEdit('purchase-edit', 'form-purchase-edit', 'modal-purchase-edit', [{input: 'text', name: 'business_name'}, {input: 'text', name: 'name'}, {input: 'text', name: 'lastname'}, {input: 'text', name: 'document'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}, {input: 'checkbox', name: 'state'}]);
-  updateR('form-purchase-edit', num, false);
-
   //delete
   showModalDelete('purchase-delete', 'form-purchase-delete', 'modal-purchase-delete');
   destroyR('form-purchase-delete');
-
-  $("#modal-purchase-edit").on("show.bs.modal", function () {
-  });
 
   //***DataTable***
 
@@ -55,7 +42,7 @@ $(document).ready(function() {
     },
     {data: 'action', visible: true, render: function ( data, type, full, meta ) {
         var url = data.split(',');
-        return '<button class="btn btn-md btn-primary" title="Editar" id="purchase-edit" data-url-edit="'+url[0]+'" data-url-update="'+url[1]+'"><i class="fa fa-edit"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="purchase-delete" data-url="'+url[2]+'"><i class="fa fa-ban"></i></button>';
+        return '<button class="btn btn-md btn-primary" title="Editar" id="purchase-edit" data-url-edit="'+url[0]+'" data-url-update="'+url[1]+'"><i class="fa fa-eye"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="purchase-delete" data-url="'+url[2]+'"><i class="fa fa-ban"></i></button>';
       }
     }
   ];
