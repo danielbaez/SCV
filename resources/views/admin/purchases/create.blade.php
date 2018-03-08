@@ -72,7 +72,7 @@
 						<div class="col-xs-3">
 							<div class="form-group">
 					            <label for="barcode">*Código</label>
-				                <input type="text" class="form-control" id="barcode" placeholder="Busca por código">
+				                <input type="text" class="form-control" id="search-barcode" placeholder="Busca por código" data-url="{{ route('admin.products.purchase.autocomplete') }}">
 				            </div>
 						</div>
 						<div class="col-xs-5">

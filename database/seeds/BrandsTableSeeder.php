@@ -16,5 +16,25 @@ class BrandsTableSeeder extends Seeder
         	'name' => 'Lenovo',
             'state' => 1
         ]);
+        Brand::create([
+            'name' => 'HP',
+            'state' => 1
+        ]);
+        Brand::create([
+            'name' => 'Mac',
+            'state' => 1
+        ]);
+        Brand::create([
+            'name' => 'Toshiba',
+            'state' => 1
+        ]);
+        Brand::create([
+            'name' => 'Samsung',
+            'state' => 1
+        ]);
+        Brand::create([
+            'name' => 'Logitech',
+            'state' => 1
+        ]);
     }
 }

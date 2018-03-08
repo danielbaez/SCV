@@ -177,12 +177,31 @@ class ProductsController extends Controller
         if($action == 'product-search')
         {
             $search = $request->get('query');
-            $products = Product::where('name', 'LIKE', "%{$search}%")->select('id', 'name')->get();    
+            //$products = Product::where('name', 'LIKE', "%{$search}%")->select('id', 'name')->get();    
+
+            $products = Product::with('category')
+                        ->with('brand')
+                        ->with('presentation')
+                        ->whereHas('category', function ($query) use ($search) {
+                            $query->where('name', 'LIKE', "%{$search}%");
+                        })
+                        ->orWhereHas('brand', function ($query) use ($search) {
+                            $query->where('name', 'LIKE', "%{$search}%");
+                        })
+                        ->orWhereHas('presentation', function ($query) use ($search) {
+                            $query->where('name', 'LIKE', "%{$search}%");
+                        })
+                        ->orWhere('.name', 'LIKE', "%{$search}%")
+                        ->get();
+        }
+        elseif($action == 'barcode')
+        {
+            $search = $request->get('query');
+            $products = Product::where('barcode', $search)->select('id', 'name')->get(); 
         }
         elseif($action == 'product-detail')
         {
             $search = $request->get('id_product');
-            //$products = Product::find($search);
             $products = Product::with('category')->with('brand')->with('presentation')->where('products.id', $search)->get();
             $products = $products->toJson();    
         }

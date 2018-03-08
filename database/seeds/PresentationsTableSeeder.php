@@ -16,5 +16,9 @@ class PresentationsTableSeeder extends Seeder
         	'name' => 'Unidad',
             'state' => 1
         ]);
+        Presentation::create([
+            'name' => '1L',
+            'state' => 1
+        ]);
     }
 }

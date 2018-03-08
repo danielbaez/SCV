@@ -44,10 +44,10 @@ class PurchasesController extends Controller
         return datatables()
                 ->eloquent($purchases)
                 ->filterColumn('state', function($query, $keyword) { 
-                    $query->whereRaw("IF(state = 1, 'Activo', 'Inactivo') like ?", ["%{$keyword}%"]); 
+                    $query->whereRaw("IF(state = 1, 'Aceptado', 'Anulado') like ?", ["%{$keyword}%"]); 
                 })
                 ->addColumn('action', function ($purchases) {
-                    return route('admin.purchases.edit', $purchases->id).','.route('admin.purchases.update', $purchases->id).','.route('admin.purchases.destroy', $purchases->id);
+                    return route('admin.purchases.show', $purchases->id).','.route('admin.purchases.destroy', $purchases->id);
                 })
                 ->toJson();
     }
@@ -104,7 +104,7 @@ class PurchasesController extends Controller
                 'price' => $purchase_price[$key]
             ]);
             $product = Product::find($value);
-            $product->sale_price = $purchase_price[$key];
+            $product->purchase_price = $purchase_price[$key];
             $product->stock += $quantity[$key];
             $product->save();
         }
@@ -122,7 +122,11 @@ class PurchasesController extends Controller
      */
     public function show($id)
     {
-        //
+        return Purchase::with('provider')->with(array('purchase_detail'=>function($query) {
+                        $query->with(array('product' => function($query) {
+                            $query->with('category')->with('brand')->with('presentation');
+                        }));
+                    }))->where('purchases.id', $id)->get();
     }
 
     /**
@@ -154,8 +158,24 @@ class PurchasesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Purchase $purchase)
     {
-        //
+        if($purchase->state == 1)
+        {
+            $purchase->state = 0;
+            $purchase->save();
+
+            $purchase_detail = Purchase_detail::where('purchase_id', $purchase->id)->get();
+
+            foreach ($purchase_detail as $key => $value) {
+                $product = Product::find($value->product_id);
+                $product->stock -= $value->quantity;
+                $product->save();
+            }        
+            
+            $request->session()->flash('flash', 'Se ha anulado la compra correctamente');
+
+            return response()->json(['state' => true, 'url' => route('admin.purchases.index')]);
+        }
     }
 }

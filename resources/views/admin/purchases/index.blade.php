@@ -36,9 +36,8 @@
 		</div>
 	</div>
 
-	
-	{{-- @include('admin.purchases.edit')
-	@include('admin.purchases.delete')--}}
+	@include('admin.purchases.detail')
+	@include('admin.purchases.delete')
 
     <div class="col-xs-12" id="div-purchase-index">
     	<div class="box box-primary">

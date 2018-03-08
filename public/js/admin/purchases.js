@@ -18,7 +18,7 @@ $(document).ready(function() {
     {column: 'voucher_number'},
     {column: 'total'},
     {column: 'date'},
-    {column: 'state', condition: [1, 'Activo', 'Inactivo']}
+    {column: 'state', condition: [1, 'Aceptado', 'Anulado']}
   ];
 
   overwriteExport('purchases', columnsExport);
@@ -37,12 +37,17 @@ $(document).ready(function() {
     {data: 'total'},
     {data: 'date'},
     {data: 'state', visible: true, render: function ( data, type, full, meta ) {
-        return data == 1 ? "<span class='badge alert-success'>Activo</span>" : "<span class='badge alert-danger'>Inactivo</span>";
+        return data == 1 ? "<span class='badge alert-success'>Aceptado</span>" : "<span class='badge alert-danger'>Anulado</span>";
       }
     },
     {data: 'action', visible: true, render: function ( data, type, full, meta ) {
         var url = data.split(',');
-        return '<button class="btn btn-md btn-primary" title="Editar" id="purchase-edit" data-url-edit="'+url[0]+'" data-url-update="'+url[1]+'"><i class="fa fa-eye"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="purchase-delete" data-url="'+url[2]+'"><i class="fa fa-ban"></i></button>';
+        if(full.state == 1) {
+          return '<button class="btn btn-md btn-primary" title="Editar" id="purchase-detail" data-url="'+url[0]+'"><i class="fa fa-eye"></i></button> <button class="btn btn-md btn-danger" title="Eliminar" id="purchase-delete" data-url="'+url[1]+'"><i class="fa fa-ban"></i></button>';  
+        }else {
+          return '<button class="btn btn-md btn-primary" title="Detalle" id="purchase-detail" data-url="'+url[0]+'"><i class="fa fa-eye"></i></button>';
+        }
+        
       }
     }
   ];
@@ -69,7 +74,7 @@ $(document).ready(function() {
     },
 
     getValue: function(element) {
-      return element.name;
+      return element.category.name+' | '+element.brand.name+' | '+element.presentation.name+' | '+element.name;
     },
 
     ajaxSettings: {
@@ -131,11 +136,11 @@ $(document).ready(function() {
 
       if(!$('tr[data-'+response.id+'="' + response.id + '"]').length){
         var html = '<tr data-'+response.id+'='+response.id+'>';
-          html += '<td>'+response.id+'</td>';
-          html += '<td>'+response.name+'</td>';
-          html += '<td>'+response.category.name+'</td>';
-          html += '<td>'+response.brand.name+'</td>';
-          html += '<td>'+response.presentation.name+'</td>';
+          html += '<td class="text-center">'+response.id+'</td>';
+          html += '<td class="text-center">'+response.name+'</td>';
+          html += '<td class="text-center">'+response.category.name+'</td>';
+          html += '<td class="text-center">'+response.brand.name+'</td>';
+          html += '<td class="text-center">'+response.presentation.name+'</td>';
           html += '<input type="hidden" name="product_id[]" value="'+response.id+'">';
           html += '<td class="text-center" id="quantity-'+response.id+'"><input type="text" class="form-control allownumericwithoutdecimal" name="quantity[]" value="1" style="width: 30%; min-width: 60px; margin: auto"></td>';
           html += '<td class="text-center" id="purchase_price-'+response.id+'"><input type="text" class="form-control allownumericwithdecimal" name="purchase_price[]" value="'+response.purchase_price+'" style="width: 40%; min-width: 60px; margin: auto"></td>';
@@ -282,6 +287,71 @@ $(document).ready(function() {
 
     obj.data = $(this).serialize();
     $.ajax(obj);
+  });
+
+  $("body").on("click", "#purchase-detail", function () {
+    var url = $(this).data('url');
+    $.ajax({
+       type: 'GET',
+       url: url,
+       data: {},
+       success: function(data) {
+        console.log(data)
+        var response = data[0];
+        var detail = response.purchase_detail;
+        var html_detail;
+        for(var i=0; i<detail.length; i++) {
+          html_detail += '<tr>';
+            html_detail += '<td class="text-center">'+detail[i].product_id+'</td>';
+            html_detail += '<td class="text-center">'+detail[i].product.name+'</td>';
+            html_detail += '<td class="text-center">'+detail[i].product.category.name+'</td>';
+            html_detail += '<td class="text-center">'+detail[i].product.brand.name+'</td>';
+            html_detail += '<td class="text-center">'+detail[i].product.presentation.name+'</td>';
+            html_detail += '<td class="text-center">'+detail[i].quantity+'</td>';
+            html_detail += '<td class="text-center">S/ '+detail[i].price+'</td>';
+            html_detail += '<td class="text-center">S/ '+(detail[i].quantity*detail[i].price)+'</td>';
+          html_detail += '</tr>';
+        }
+        html_detail += '<tr>';
+          html_detail += '<td colspan="6"></td>';
+          html_detail += '<td style="font-weight:bold" class="text-center">Total:</td>';
+          html_detail += '<td class="text-center">S/ '+response.total+'</td>';
+        html_detail += '</tr>';
+
+        var html_provider;
+        html_provider += '<tr>';
+          html_provider += '<td class="text-center">'+response.provider_id+'</td>';
+          html_provider += '<td class="text-center">'+response.provider.business_name+'</td>';
+          html_provider += '<td class="text-center">'+response.provider.document+'</td>';
+          html_provider += '<td class="text-center">'+response.provider.address+'</td>';
+        html_provider += '</tr>';
+        
+        $('#tbody-purchase-provider').html(html_provider);
+        $('#tbody-purchase-detail').html(html_detail);
+        $('#modal-purchase-detail').modal('show');
+       }
+     });
+  });
+
+  $('body').on("keypress", '#search-barcode', function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    var $this = $(this);
+    var id = '#search-barcode';
+    if(keycode == '13' && $this.val() != ''){
+      $.ajax({
+        data: {query: $this.val(), action: 'barcode'},
+        type: "GET",
+        dataType: "json",
+        url: $(id).attr('data-url')
+      })
+      .done(function(data){
+        if(data.length) {
+          addProduct('product-detail', data[0].id, id);
+        }else {
+          $this.val('').focus();
+        }
+      });
+    }
   });
 
 });

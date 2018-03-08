@@ -16,5 +16,17 @@ class CategoriesTableSeeder extends Seeder
         	'name' => 'Laptop',
             'state' => 1
         ]);
+        Category::create([
+            'name' => 'Impresora',
+            'state' => 1
+        ]);
+        Category::create([
+            'name' => 'Mouse',
+            'state' => 1
+        ]);
+        Category::create([
+            'name' => 'PC',
+            'state' => 1
+        ]);
     }
 }
