@@ -116,4 +116,10 @@ class VouchersController extends Controller
 
         return response()->json(['state' => true, 'url' => route('admin.vouchers.index')]);
     }
+
+    public function information(Request $request)
+    {
+        $id = $request->get('id');
+        return Voucher::find($id);
+    }
 }

@@ -277,12 +277,16 @@ function overwriteExport(tableId, columnsExport) {
           if($.isArray(columnsExport[i].column)) {
             if(columnsExport[i].condition) {
               newData.push(theArray[index][columnsExport[i].column[0]][columnsExport[i].column[1]] == columnsExport[i].condition[0] ? columnsExport[i].condition[1] : columnsExport[i].condition[2]);
+            }else if(columnsExport[i].join) {
+              newData.push(theArray[index][columnsExport[i].column[0]][columnsExport[i].column[1]]+' '+theArray[index][columnsExport[i].join[0]][columnsExport[i].join[1]]);
             }else{
               newData.push(theArray[index][columnsExport[i].column[0]][columnsExport[i].column[1]]);
             }           
           }else {
             if(columnsExport[i].condition) {
               newData.push(theArray[index][columnsExport[i].column] == columnsExport[i].condition[0] ? columnsExport[i].condition[1] : columnsExport[i].condition[2]);
+            }else if(columnsExport[i].join) {
+              newData.push(theArray[index][columnsExport[i].column]+' '+theArray[index][columnsExport[i].join]);
             }else {
               newData.push(theArray[index][columnsExport[i].column]);  
             } 

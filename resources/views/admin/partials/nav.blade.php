@@ -40,45 +40,45 @@
   </li>
 
   <li class="treeview {{ setActiveRoute(['admin.categories.index', 'admin.brands.index', 'admin.presentations.index', 'admin.products.index']) }}">
-    <a href="#"><i class="fa fa-users"></i> <span>Almacén</span>
+    <a href="#"><i class="fa fa-product-hunt"></i> <span>Almacén</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
     <ul class="treeview-menu">
       <li class="{{ setActiveRoute('admin.categories.index') }}">
-        <a href="{{ route('admin.categories.index') }}"><i class="fa fa-users"></i> Categorías</a>
+        <a href="{{ route('admin.categories.index') }}"><i class="fa fa-certificate"></i> Categorías</a>
       </li>
       <li class="{{ setActiveRoute('admin.brands.index') }}">
-        <a href="{{ route('admin.brands.index') }}"><i class="fa fa-user"></i> Marcas</a>
+        <a href="{{ route('admin.brands.index') }}"><i class="fa fa-maxcdn"></i> Marcas</a>
       </li>
       <li class="{{ setActiveRoute('admin.presentations.index') }}">
-        <a href="{{ route('admin.presentations.index') }}"><i class="fa fa-user"></i> Presentaciones</a>
+        <a href="{{ route('admin.presentations.index') }}"><i class="fa fa-gift"></i> Presentaciones</a>
       </li>
       <li class="">
-        <a href="{{ route('admin.products.index') }}"><i class="fa fa-eye"></i> Productos</a>
+        <a href="{{ route('admin.products.index') }}"><i class="fa fa-product-hunt"></i> Productos</a>
       </li>  
     </ul>
   </li>
 
   <li class="treeview {{ setActiveRoute(['admin.providers.index', 'admin.purchases.index', 'admin.purchases.create']) }}">
-    <a href="#"><i class="fa fa-users"></i> <span>Compras</span>
+    <a href="#"><i class="fa fa-shopping-cart"></i> <span>Compras</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
     </a>
     <ul class="treeview-menu">
       <li class="{{ setActiveRoute('admin.providers.index') }}">
-        <a href="{{ route('admin.providers.index') }}"><i class="fa fa-users"></i> Proveedores</a>
+        <a href="{{ route('admin.providers.index') }}"><i class="fa fa-truck"></i> Proveedores</a>
       </li>
       <li class="{{ setActiveRoute(['admin.purchases.index', 'admin.purchases.create']) }}">
-        <a href="{{ route('admin.purchases.index') }}"><i class="fa fa-user"></i> Compras</a>
+        <a href="{{ route('admin.purchases.index') }}"><i class="fa fa-shopping-cart"></i> Compras</a>
       </li>
     </ul>
   </li>
 
-  <li class="treeview {{ setActiveRoute(['admin.customers.index', 'admin.brands.index']) }}">
-    <a href="#"><i class="fa fa-users"></i> <span>Ventas</span>
+  <li class="treeview {{ setActiveRoute(['admin.customers.index', 'admin.sales.index']) }}">
+    <a href="#"><i class="fa fa-money"></i> <span>Ventas</span>
       <span class="pull-right-container">
           <i class="fa fa-angle-left pull-right"></i>
         </span>
@@ -87,8 +87,8 @@
       <li class="{{ setActiveRoute('admin.customers.index') }}">
         <a href="{{ route('admin.customers.index') }}"><i class="fa fa-users"></i> Clientes</a>
       </li>
-      <li class="{{ setActiveRoute('admin.brands.index') }}">
-        <a href="{{ route('admin.brands.index') }}"><i class="fa fa-user"></i> Ventas</a>
+      <li class="{{ setActiveRoute('admin.sales.index') }}">
+        <a href="{{ route('admin.sales.index') }}"><i class="fa fa-money"></i> Ventas</a>
       </li>
     </ul>
   </li>  

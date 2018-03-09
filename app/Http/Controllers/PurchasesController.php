@@ -19,9 +19,7 @@ class PurchasesController extends Controller
      */
     public function index()
     {
-        $providers = Provider::all();
-        $vouchers = Voucher::all();
-        return view('admin.purchases.index', compact('providers', 'vouchers'));
+        return view('admin.purchases.index', compact(''));
     }
 
     public function ajaxPurchases(Request $request)

@@ -137,4 +137,30 @@ class CustomersController extends Controller
 
         return response()->json(['state' => true, 'url' => route('admin.customers.index')]);
     }
+
+    public function saleAutocomplete(Request $request)
+    {
+        $action = $request->get('action');
+        if($action == 'customer-search')
+        {
+            $search = $request->get('query');
+            $customers = Customer::where(function($query) use ($search) {
+                            $query->whereRaw("CONCAT(name, ' ', lastname) LIKE '%{$search}%'");
+                            //$query->orWhere('lastname', 'LIKE', "%{$search}%");
+                            $query->orWhere('document', 'LIKE', "%{$search}%");
+                        })->selectRaw('id, CONCAT(name, " ", lastname, " ", document) as text')->get();    
+        }
+        elseif($action == 'barcode')
+        {
+            $search = $request->get('query');
+            $products = Product::where('barcode', $search)->select('id', 'name')->get(); 
+        }
+        elseif($action == 'product-detail')
+        {
+            $search = $request->get('id_product');
+            $products = Product::with('category')->with('brand')->with('presentation')->where('products.id', $search)->get();
+            $products = $products->toJson();    
+        }
+        return ['items' => $customers];
+    }
 }

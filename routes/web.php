@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 		]
 	);
 
+	Route::get('vouchers/information', 'VouchersController@information')->name('admin.vouchers.information');
 	Route::resource('vouchers', 'VouchersController', ['as' => 'admin']);
 
 	Route::resource('configurations', 'ConfigurationsController',
@@ -75,17 +76,22 @@ Route::group(['prefix' => 'admin', /*'namespace' => 'Admin',*/ 'middleware' => '
 	Route::resource('presentations', 'PresentationsController', ['as' => 'admin']);
 
 	Route::get('products/ajaxProducts', 'ProductsController@ajaxProducts')->name('admin.products.ajaxProducts');
-	Route::get('products/purchase/autocomplete', 'ProductsController@purchaseAutocomplete')->name('admin.products.purchase.autocomplete');	
+	Route::get('products/purchase/autocomplete', 'ProductsController@purchaseAutocomplete')->name('admin.products.purchase.autocomplete');
+	Route::get('products/sale/autocomplete', 'ProductsController@saleAutocomplete')->name('admin.products.sale.autocomplete');	
 	Route::resource('products', 'ProductsController', ['as' => 'admin']);
 
 	Route::get('providers/ajaxProviders', 'ProvidersController@ajaxProviders')->name('admin.providers.ajaxProviders');
 	Route::resource('providers', 'ProvidersController', ['as' => 'admin']);
 
 	Route::get('customers/ajaxCustomers', 'CustomersController@ajaxCustomers')->name('admin.customers.ajaxCustomers');
+	Route::get('customers/sale/autocomplete', 'CustomersController@saleAutocomplete')->name('admin.customers.sale.autocomplete');
 	Route::resource('customers', 'CustomersController', ['as' => 'admin']);
 
 	Route::get('purchases/ajaxPurchases', 'PurchasesController@ajaxPurchases')->name('admin.purchases.ajaxPurchases');
 	Route::resource('purchases', 'PurchasesController', ['as' => 'admin']);
+
+	Route::get('sales/ajaxSales', 'SalesController@ajaxSales')->name('admin.sales.ajaxSales');
+	Route::resource('sales', 'SalesController', ['as' => 'admin']);
 
 });
 

@@ -3,20 +3,21 @@
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/datatables-export-buttons/buttons.dataTables.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('adminlte/bower_components/select2/dist/css/select2.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/easy-autocomplete.min.css') }}">
 @endpush
 
 @section('header')
-	<h1 id="header-purchases-create">
-		AGREGAR COMPRA</button>
+	<h1 id="header-sales-create">
+		AGREGAR VENTA</button>
 	</h1>
 @endsection
 @section('content')
 
 <div class="row">
 
-    <div class="col-xs-12" id="div-purchase-create">
-		<form id="form-purchase-store" action="{{ route('admin.purchases.store') }}">
+    <div class="col-xs-12" id="div-sale-create">
+		<form id="form-sale-store" action="{{ route('admin.sales.store') }}">
 			<input type="hidden" name="action" value="store">
 			<div class="box box-primary">
 				<div class="box-body">
@@ -24,43 +25,38 @@
 						<div class="col-xs-3">
 							<div class="form-group">
 					            <label for="voucher">*Comprobante</label>
-				                <select name="voucher" class="form-control" id="voucher">
-				                 	<option value="">Seleccione un comp</option>
-				                    {{-- @foreach($vouchers as $voucher)
+				                <select name="voucher" class="form-control" id="voucher" data-url="{{ route('admin.vouchers.information') }}">
+				                 	<option value="">Seleccione un comprobante</option>
+				                    @foreach($vouchers as $voucher)
 				                    	<option value="{{ $voucher->id }}">{{ $voucher->name }}</option>
-				                    @endforeach --}}
-				                    <option value="Boleta">Boleta</option>
-				                    <option value="Factura">Factura</option>
+				                    @endforeach
 				                </select>
 				            </div>
 						</div>
 						<div class="col-xs-3">
-							<div class="form-group">
-					            <label for="provider_id">*Proveedor</label>
-				                <select name="provider_id" class="form-control" id="provider_id">
-				                 	<option value="">Seleccione un proveedor</option>
-				                    @foreach($providers as $provider)
-				                    	<option value="{{ $provider->id }}">{{ $provider->business_name }}</option>
-				                    @endforeach
+				            <div class="form-group">
+				                <label for="customer_id">*Cliente</label>
+				                <select name="customer_id" class="form-control customer-autocomplete" id="customer_id" data-url="{{ route('admin.customers.sale.autocomplete') }}" style="width: 100%;">
+				                  <option selected="selected" value="">Busca por nombre o documento</option>
 				                </select>
 				            </div>
 						</div>
 						<div class="col-xs-2">
 							<div class="form-group">
 					            <label for="voucher_serie">*Serie</label>
-				                <input name="voucher_serie" type="text" class="form-control" id="voucher_serie" placeholder="Nro de serie">
+				                <input readonly name="voucher_serie" type="text" class="form-control" id="voucher_serie" placeholder="Nro de serie">
 				            </div>
 						</div>
 						<div class="col-xs-2">
 							<div class="form-group">
 					            <label for="voucher_number">*Nro de Venta</label>
-				                <input name="voucher_number" type="text" class="form-control" id="voucher_number" placeholder="Nro de comprobante">
+				                <input readonly name="voucher_number" type="text" class="form-control" id="voucher_number" placeholder="Nro de comprobante">
 				            </div>
 						</div>
 						<div class="col-xs-2">
 							<div class="form-group">
 					            <label for="date">*Fecha</label>
-				                <input name="date" type="date" class="form-control" id="date">
+				                <input readonly name="date" type="date" value="{{ date('Y-m-d') }}" class="form-control" id="date">
 				            </div>
 						</div>
 					</div>
@@ -72,13 +68,13 @@
 						<div class="col-xs-3">
 							<div class="form-group">
 					            <label for="barcode">*Código</label>
-				                <input type="text" class="form-control" id="search-barcode" placeholder="Busca por código de producto" data-url="{{ route('admin.products.purchase.autocomplete') }}">
+				                <input type="text" class="form-control" id="search-barcode" placeholder="Busca por código de producto" data-url="{{ route('admin.products.sale.autocomplete') }}">
 				            </div>
 						</div>
 						<div class="col-xs-5">
 							<div class="form-group">
 					            <label for="product">*Producto</label>
-				                <input type="text" class="form-control" id="autocomplete-product-purchase" placeholder="Busca por nombre, categoría, marca o presentación de producto" data-url="{{ route('admin.products.purchase.autocomplete') }}">
+				                <input type="text" class="form-control" id="autocomplete-product-sale" placeholder="Busca por nombre, categoría, marca o presentación de producto" data-url="{{ route('admin.products.sale.autocomplete') }}">
 				            </div>
 						</div>
 						<div class="col-xs-4 text-center">
@@ -99,8 +95,10 @@
 					  			<th class="text-center">Categoría</th>
 					  			<th class="text-center">Marca</th>
 					  			<th class="text-center">Presentación</th>
+					  			<th class="text-center">Stock</th>
 					  			<th class="text-center">Cantidad</th>
 					  			<th class="text-center">Precio</th>
+					  			<th class="text-center">Importe</th>
 					  			<th class="text-cente">Eliminar</th>
 					  		</thead>
 					  		<tbody id="tbody-products">
@@ -111,9 +109,9 @@
 				</div>
 			</div>
 
-			<div class="row div-save-purchase" style="display: none">
+			<div class="row div-save-sale" style="display: none">
 				<div class="col-xs-12 text-center">
-					<button type="submit" class="btn btn-success">GUARDAR COMPRA</button>
+					<button type="submit" class="btn btn-success">GUARDAR VENTA</button>
 				</div>
 			</div>
 		</form>
@@ -135,7 +133,8 @@
 	<script src="{{ asset('js/datatables-export-buttons/buttons.html5.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.colVis.min.js') }}"></script>
+	<script src="{{ asset('adminlte/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 	<script src="{{ asset('js/jquery.easy-autocomplete.min.js') }}"></script>
 	<script src="{{ asset('js/admin/script.js') }}"></script>
-	<script src="{{ asset('js/admin/purchases.js') }}"></script>
+	<script src="{{ asset('js/admin/sales.js') }}"></script>
 @endpush
