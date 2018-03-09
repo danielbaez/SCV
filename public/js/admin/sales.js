@@ -169,17 +169,20 @@ $(document).ready(function() {
       var response = data[0];
 
       if(!$('tr[data-'+response.id+'="' + response.id + '"]').length){
-        var html = '<tr data-'+response.id+'='+response.id+'>';
+        var html = '<tr data-id='+response.id+' data-'+response.id+'='+response.id+'>';
           html += '<td class="text-center">'+response.id+'</td>';
           html += '<td class="text-center">'+response.name+'</td>';
           html += '<td class="text-center">'+response.category.name+'</td>';
           html += '<td class="text-center">'+response.brand.name+'</td>';
           html += '<td class="text-center">'+response.presentation.name+'</td>';
           html += '<input type="hidden" name="product_id[]" value="'+response.id+'">';
-          html += '<td class="text-center">'+response.stock+'</td>';
+          html += '<td class="text-center" id="stock-'+response.id+'">'+response.stock+'</td>';
           html += '<td class="text-center" id="quantity-'+response.id+'"><input type="text" class="form-control allownumericwithoutdecimal" name="quantity[]" value="1" style="width: 30%; min-width: 60px; margin: auto"></td>';
-          html += '<td class="text-center" id="sale_price-'+response.id+'"><input readonly type="text" class="form-control allownumericwithdecimal" name="sale_price[]" value="'+response.sale_price+'" style="width: 40%; min-width: 60px; margin: auto"></td>';
-          html += '<td class="text-center">'+(response.sale_price)+'</td>';
+          html += '<td class="text-center" id="sale_price-'+response.id+'">'+response.sale_price+'</td>';
+          
+          html += '<input type="hidden" class="form-control" name="sale_price[]" value="'+response.sale_price+'" style="width: 40%; min-width: 60px; margin: auto"></td>';
+
+          html += '<td class="text-center" id="amount-'+response.id+'">'+(response.sale_price)+'</td>';
           html += '<td class="text-center"><i style="color:red" class="product-delete fa fa-times fa-2x" aria-hidden="true"></i></td>';
         html += '</tr>';
         $('#tbody-products').append(html);
@@ -239,7 +242,7 @@ $(document).ready(function() {
 
   }
 
-  $('body').on("keypress keyup blur", '.allownumericwithdecimal', function (event) {
+  $('body').on("keyup", '.allownumericwithdecimal', function (event) {
     $(this).val($(this).val().replace(/[^0-9\.]/g,''));
     if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
         event.preventDefault();
@@ -248,29 +251,47 @@ $(document).ready(function() {
     var total = 0;
     $("td[id^='sale_price-']").each(function() {
       var quantity = $(this).parent().find("td input[name^='quantity']").val();
-      var sale_price = parseFloat($(this).find('input[name^="sale_price"]').val());
+      var sale_price = parseFloat($(this).html());
       total += quantity*sale_price;
     });
     $('#total').html(total.toFixed(2));
   });
 
-  $('body').on("keypress keyup blur", '.allownumericwithoutdecimal', function (event) {    
+  $('body').on("keyup", '.allownumericwithoutdecimal', function (event) {    
     $(this).val($(this).val().replace(/[^\d].+/, ""));
     if ((event.which < 48 || event.which > 57)) {
         event.preventDefault();
     }
 
+    var id = $(this).parent().parent().data('id');
+
+    if($(this).val() === '0') {
+      $(this).val(1)
+    }
+
+    
+    if(parseInt($('#stock-'+id).html()) < $(this).val()) {
+      $(this).val(1);
+      alert('La cantidad ingresada no puede ser mayor que el stock actual');
+    }
+
     var total = 0;
     $("td[id^='sale_price-']").each(function() {
       var quantity = $(this).parent().find("td input[name^='quantity']").val();
-      var sale_price = parseFloat($(this).find('input[name^="sale_price"]').val());
+      var sale_price = parseFloat($(this).html());
       total += quantity*sale_price;
     });
     $('#total').html(total.toFixed(2));
+
+    
+    var q = $('#quantity-'+id).find("input[name^='quantity']").val();
+    var p = $('#sale_price-'+id).html();
+    $('#amount-'+id).html((q*p).toFixed(2));
+
   });
 
   $("body").on("click", ".product-delete", function () {    
-    var sale_price = $(this).parent().parent().find("td[id^='sale_price-']").find('input[name^="sale_price"]').val();
+    var sale_price = $(this).parent().parent().find("td[id^='sale_price-']").html();
     var quantity = $(this).parent().parent().find("td[id^='quantity-']").find('input[name^="quantity"]').val();
     $(this).parent().parent().remove();
     removePrice(sale_price*quantity);
@@ -304,18 +325,32 @@ $(document).ready(function() {
           $.each(errors, function(key, value) {
             $this.find('#'+key).parent('div').removeClass('num-'+(num-1));
             $this.find('#'+key).parent('div').addClass('has-error num-'+num);
-            if($this.find('#'+key).next().is('span.help-block')) {
-                $this.find('#'+key).next().find('strong').html(value);
+            if(key == 'customer_id' && $('.select2').next().is('span.help-block')) {
+              $('.select2').next().find('strong').html(value);
+            }
+            else if($this.find('#'+key).next().is('span.help-block')) {
+              $this.find('#'+key).next().find('strong').html(value);
             }
             else {
-              $this.find('#'+key).after('<span class="help-block"><strong>'+value+'</strong></span>')
+              if(key == 'customer_id') {
+                $('.select2').after('<span class="help-block"><strong>'+value+'</strong></span>');
+                $('.select2 span.select2-selection').css({'border-color':'#dd4b39'});
+              }else {
+                $this.find('#'+key).after('<span class="help-block"><strong>'+value+'</strong></span>');
+              }
+              
             }
           });
 
           $('.has-error.num-'+(num-1)).each(function(i, obj) {
               $(obj).removeClass('num-'+(num-1));
               $(obj).removeClass('has-error');
-              $(obj).find('span').remove();
+              if($(obj).has('span.select2').length) {
+                $(obj).find('span.help-block').remove();
+                $(obj).find('span.select2-selection').css({'border-color':'#d2d6de'});
+              }else {
+                $(obj).find('span').remove();
+              }
           });
         }
       }
@@ -391,22 +426,54 @@ $(document).ready(function() {
   });
 
   $('body').on('change', '#voucher', function() {
-    var id = $(this).val();
-    if(id != '') {
+    var $this = $(this);
+    if($this.val() != '') {
       $.ajax({
-        data: {id: id},
+        data: {id: $this.val()},
         type: "GET",
         dataType: "json",
-        url: $(this).attr('data-url')
+        url: $this.attr('data-url')
       })
       .done(function(data){
         $('#voucher_serie').val(data.serie);
-        $('#voucher_number').val(data.to);
+        if(data.now == 0){
+          $('#voucher_number').val(data.from);  
+        }
+        else{
+          $('#voucher_number').val(prependZeros(parseInt(data.now) + 1, data.from.length+1));
+        }
       });
+
+      var aaa = setInterval(function(){
+        if($this.val() != '') {
+          $.ajax({
+            data: {id: $this.val()},
+            type: "GET",
+            dataType: "json",
+            url: $this.attr('data-url')
+          })
+          .done(function(data){
+            $('#voucher_serie').val(data.serie);
+            if(data.now == 0){
+              $('#voucher_number').val(data.from);  
+            }
+            else{
+              $('#voucher_number').val(prependZeros(parseInt(data.now) + 1, data.from.length+1));
+            }
+          });
+        }else {
+          clearInterval(aaa);
+        }
+      }, 6000);
     }else {
       $('#voucher_serie').val('');
       $('#voucher_number').val('');
     }
   });
+
+  function prependZeros(num, len){
+    var str = ("" + num);
+    return (Array(Math.max(len-str.length, 0)).join("0") + str);
+  }
 
 });

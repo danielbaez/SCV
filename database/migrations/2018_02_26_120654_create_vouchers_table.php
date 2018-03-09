@@ -18,6 +18,7 @@ class CreateVouchersTable extends Migration
             $table->string('name')->unique();
             $table->string('serie');
             $table->string('from');
+            $table->string('now');
             $table->string('to');
             $table->integer('state');
             $table->timestamps();

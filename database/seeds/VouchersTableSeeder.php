@@ -16,6 +16,7 @@ class VouchersTableSeeder extends Seeder
         	'name' => 'Boleta',
         	'serie' => '001',
         	'from' => '000001',
+            'now' => '000111',
         	'to' => '999999',
             'state' => 1
         ]);

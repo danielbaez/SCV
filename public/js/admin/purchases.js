@@ -135,7 +135,7 @@ $(document).ready(function() {
       var response = data[0];
 
       if(!$('tr[data-'+response.id+'="' + response.id + '"]').length){
-        var html = '<tr data-'+response.id+'='+response.id+'>';
+        var html = '<tr data-id='+response.id+' data-'+response.id+'='+response.id+'>';
           html += '<td class="text-center">'+response.id+'</td>';
           html += '<td class="text-center">'+response.name+'</td>';
           html += '<td class="text-center">'+response.category.name+'</td>';
@@ -144,6 +144,7 @@ $(document).ready(function() {
           html += '<input type="hidden" name="product_id[]" value="'+response.id+'">';
           html += '<td class="text-center" id="quantity-'+response.id+'"><input type="text" class="form-control allownumericwithoutdecimal" name="quantity[]" value="1" style="width: 30%; min-width: 60px; margin: auto"></td>';
           html += '<td class="text-center" id="purchase_price-'+response.id+'"><input type="text" class="form-control allownumericwithdecimal" name="purchase_price[]" value="'+response.purchase_price+'" style="width: 40%; min-width: 60px; margin: auto"></td>';
+          html += '<td class="text-center" id="amount-'+response.id+'">'+(response.purchase_price)+'</td>';
           html += '<td class="text-center"><i style="color:red" class="product-delete fa fa-times fa-2x" aria-hidden="true"></i></td>';
         html += '</tr>';
         $('#tbody-products').append(html);
@@ -203,7 +204,7 @@ $(document).ready(function() {
 
   }
 
-  $('body').on("keypress keyup blur", '.allownumericwithdecimal', function (event) {
+  $('body').on("keyup", '.allownumericwithdecimal', function (event) {
     $(this).val($(this).val().replace(/[^0-9\.]/g,''));
     if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
         event.preventDefault();
@@ -216,12 +217,21 @@ $(document).ready(function() {
       total += quantity*purchase_price;
     });
     $('#total').html(total.toFixed(2));
+
+    var id = $(this).parent().parent().data('id');
+    var q = $('#quantity-'+id).find("input[name^='quantity']").val();
+    var p = $('#purchase_price-'+id).find('input[name^="purchase_price"]').val();
+    $('#amount-'+id).html((q*p).toFixed(2));
   });
 
-  $('body').on("keypress keyup blur", '.allownumericwithoutdecimal', function (event) {    
+  $('body').on("keyup", '.allownumericwithoutdecimal', function (event) {    
     $(this).val($(this).val().replace(/[^\d].+/, ""));
     if ((event.which < 48 || event.which > 57)) {
         event.preventDefault();
+    }
+
+    if($(this).val() === '0') {
+      $(this).val(1)
     }
 
     var total = 0;
@@ -231,6 +241,11 @@ $(document).ready(function() {
       total += quantity*purchase_price;
     });
     $('#total').html(total.toFixed(2));
+
+    var id = $(this).parent().parent().data('id');
+    var q = $('#quantity-'+id).find("input[name^='quantity']").val();
+    var p = $('#purchase_price-'+id).find('input[name^="purchase_price"]').val();
+    $('#amount-'+id).html((q*p).toFixed(2));
   });
 
   $("body").on("click", ".product-delete", function () {    

@@ -101,6 +101,7 @@
 					  			<th class="text-center">Presentación</th>
 					  			<th class="text-center">Cantidad</th>
 					  			<th class="text-center">Precio</th>
+					  			<th class="text-center">Importe</th>
 					  			<th class="text-cente">Eliminar</th>
 					  		</thead>
 					  		<tbody id="tbody-products">
