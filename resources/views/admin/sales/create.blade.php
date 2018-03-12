@@ -22,7 +22,7 @@
 			<div class="box box-primary">
 				<div class="box-body">
 					<div class="row">
-						<div class="col-xs-3">
+						<div class="col-xs-12 col-sm-3">
 							<div class="form-group">
 					            <label for="voucher">*Comprobante</label>
 				                <select name="voucher" class="form-control" id="voucher" data-url="{{ route('admin.vouchers.information') }}">
@@ -33,7 +33,7 @@
 				                </select>
 				            </div>
 						</div>
-						<div class="col-xs-3">
+						<div class="col-xs-12 col-sm-3">
 				            <div class="form-group">
 				                <label for="customer_id">*Cliente</label>
 				                <select name="customer_id" class="form-control customer-autocomplete" id="customer_id" data-url="{{ route('admin.customers.sale.autocomplete') }}" style="width: 100%;">
@@ -41,19 +41,19 @@
 				                </select>
 				            </div>
 						</div>
-						<div class="col-xs-2">
+						<div class="col-xs-12 col-sm-2">
 							<div class="form-group">
 					            <label for="voucher_serie">*Serie</label>
 				                <input readonly name="voucher_serie" type="text" class="form-control" id="voucher_serie" placeholder="Nro de serie">
 				            </div>
 						</div>
-						<div class="col-xs-2">
+						<div class="col-xs-12 col-sm-2">
 							<div class="form-group">
 					            <label for="voucher_number">*Nro de Venta</label>
 				                <input readonly name="voucher_number" type="text" class="form-control" id="voucher_number" placeholder="Nro de comprobante">
 				            </div>
 						</div>
-						<div class="col-xs-2">
+						<div class="col-xs-12 col-sm-2">
 							<div class="form-group">
 					            <label for="date">*Fecha</label>
 				                <input readonly name="date" type="date" value="{{ date('Y-m-d') }}" class="form-control" id="date">
@@ -65,21 +65,31 @@
 			<div class="box box-primary">
 				<div class="box-body">
 					<div class="row">
-						<div class="col-xs-3">
+						<div class="col-xs-12 col-sm-3">
 							<div class="form-group">
 					            <label for="barcode">*Código</label>
 				                <input type="text" class="form-control" id="search-barcode" placeholder="Busca por código de producto" data-url="{{ route('admin.products.sale.autocomplete') }}">
 				            </div>
 						</div>
-						<div class="col-xs-5">
+						<div class="col-xs-12 col-sm-5">
 							<div class="form-group">
 					            <label for="product">*Producto</label>
 				                <input type="text" class="form-control" id="autocomplete-product-sale" placeholder="Busca por nombre, categoría, marca o presentación de producto" data-url="{{ route('admin.products.sale.autocomplete') }}">
 				            </div>
 						</div>
-						<div class="col-xs-4 text-center">
+						<div class="col-xs-12 col-sm-4 text-center">
 							<div style="padding: 10px; background: #1d81d7; color: white">
 								<span style="font-size: 30px; font-weight: bold">S/ <span id="total">0.00</span></span>
+							</div>
+							<div class="row" style="margin: 0; border: 1px solid #1d81d7;">
+								<div class="col-xs-6" style="border-right: 1px solid #1d81d7;">
+									<p style="font-weight: bold">Subtotal</p>
+									<p style="margin-bottom: 4px">S/ 1121.21</p>
+								</div>
+								<div class="col-xs-6">
+									<p style="font-weight: bold">IGV</p>
+									<p style="margin-bottom: 4px">S/ 322.323</p>
+								</div>
 							</div>
 						</div>
 					</div>
