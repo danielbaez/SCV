@@ -8,6 +8,7 @@ use App\Sale_detail;
 use App\Product;
 use App\Customer;
 use App\Voucher;
+use App\Configuration;
 use App\Http\Requests\SaleRequest;
 
 class SalesController extends Controller
@@ -59,7 +60,8 @@ class SalesController extends Controller
     {
         $customers = Customer::all();
         $vouchers = Voucher::all();
-        return view('admin.sales.create', compact('customers', 'vouchers'));
+        $configuration = Configuration::first();
+        return view('admin.sales.create', compact('customers', 'vouchers', 'configuration'));
     }
 
     /**
@@ -80,18 +82,26 @@ class SalesController extends Controller
             $total+= $quantity[$key] * $sale_price[$key];
         }
 
+        $configuration = Configuration::first();
+        $voucher = Voucher::find($request->get('voucher'));
+
         $sale = Sale::create([
             'user_id' => auth()->user()->id,
             'customer_id' => $request->get('customer_id'),
-            'voucher' => $request->get('voucher'),
+            'voucher' => $voucher->name,
             'voucher_serie' => $request->get('voucher_serie'),
             'voucher_number' => $request->get('voucher_number'),
+            'tax' => $configuration->tax,
+            'tax_percentage' => $configuration->tax_percentage,
             'total' => $total,
-            'date' => $request->get('date'),
+            'date' => date("Y-m-d H:i:s"),
             'state' => 1
         ]);
 
         $sale->save();
+
+        $voucher->now = $request->get('voucher_number');
+        $voucher->save();
 
         foreach ($product_id as $key => $value) {
             Sale_detail::create([

@@ -19,6 +19,9 @@ class CreateConfigurationTable extends Migration
             $table->string('document');
             $table->string('address');
             $table->string('phone');
+            $table->string('tax');
+            $table->string('tax_percentage');
+            $table->string('currency');
             $table->string('representative');
             $table->string('logo')->nullable();
             $table->timestamps();

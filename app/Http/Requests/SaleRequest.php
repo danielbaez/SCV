@@ -29,8 +29,7 @@ class SaleRequest extends FormRequest
                 'voucher' => 'required',
                 'customer_id' => 'required',
                 'voucher_serie' => 'required',
-                'voucher_number' => 'required',
-                'date' => 'required'
+                'voucher_number' => 'required'
             ];   
         }
         elseif($this->get('action') == 'update')

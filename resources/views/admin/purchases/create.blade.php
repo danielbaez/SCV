@@ -21,20 +21,7 @@
 			<div class="box box-primary">
 				<div class="box-body">
 					<div class="row">
-						<div class="col-xs-3">
-							<div class="form-group">
-					            <label for="voucher">*Comprobante</label>
-				                <select name="voucher" class="form-control" id="voucher">
-				                 	<option value="">Seleccione un comp</option>
-				                    {{-- @foreach($vouchers as $voucher)
-				                    	<option value="{{ $voucher->id }}">{{ $voucher->name }}</option>
-				                    @endforeach --}}
-				                    <option value="Boleta">Boleta</option>
-				                    <option value="Factura">Factura</option>
-				                </select>
-				            </div>
-						</div>
-						<div class="col-xs-3">
+						<div class="col-xs-12 col-md-3">
 							<div class="form-group">
 					            <label for="provider_id">*Proveedor</label>
 				                <select name="provider_id" class="form-control" id="provider_id">
@@ -45,19 +32,32 @@
 				                </select>
 				            </div>
 						</div>
-						<div class="col-xs-2">
+						<div class="col-xs-12 col-md-3">
+							<div class="form-group">
+					            <label for="voucher">*Comprobante</label>
+				                <select name="voucher" class="form-control" id="voucher">
+				                 	<option value="">Seleccione un comprobante</option>
+				                    {{-- @foreach($vouchers as $voucher)
+				                    	<option value="{{ $voucher->id }}">{{ $voucher->name }}</option>
+				                    @endforeach --}}
+				                    <option value="Boleta">Boleta</option>
+				                    <option value="Factura">Factura</option>
+				                </select>
+				            </div>
+						</div>
+						<div class="col-xs-12 col-md-2">
 							<div class="form-group">
 					            <label for="voucher_serie">*Serie</label>
 				                <input name="voucher_serie" type="text" class="form-control" id="voucher_serie" placeholder="Nro de serie">
 				            </div>
 						</div>
-						<div class="col-xs-2">
+						<div class="col-xs-12 col-md-2">
 							<div class="form-group">
 					            <label for="voucher_number">*Nro de Venta</label>
 				                <input name="voucher_number" type="text" class="form-control" id="voucher_number" placeholder="Nro de comprobante">
 				            </div>
 						</div>
-						<div class="col-xs-2">
+						<div class="col-xs-12 col-md-2">
 							<div class="form-group">
 					            <label for="date">*Fecha</label>
 				                <input name="date" type="date" class="form-control" id="date">
@@ -69,19 +69,19 @@
 			<div class="box box-primary">
 				<div class="box-body">
 					<div class="row">
-						<div class="col-xs-3">
+						<div class="col-xs-12 col-md-3">
 							<div class="form-group">
 					            <label for="barcode">*Código</label>
 				                <input type="text" class="form-control" id="search-barcode" placeholder="Busca por código de producto" data-url="{{ route('admin.products.purchase.autocomplete') }}">
 				            </div>
 						</div>
-						<div class="col-xs-5">
+						<div class="col-xs-12 col-md-5">
 							<div class="form-group">
 					            <label for="product">*Producto</label>
 				                <input type="text" class="form-control" id="autocomplete-product-purchase" placeholder="Busca por nombre, categoría, marca o presentación de producto" data-url="{{ route('admin.products.purchase.autocomplete') }}">
 				            </div>
 						</div>
-						<div class="col-xs-4 text-center">
+						<div class="col-xs-12 col-md-4 text-center">
 							<div style="padding: 10px; background: #1d81d7; color: white">
 								<span style="font-size: 30px; font-weight: bold">S/ <span id="total">0.00</span></span>
 							</div>

@@ -10,7 +10,7 @@ $(document).ready(function() {
   dataTableSimple('configurations', 'configuracion', 'Configuración', [0, 1, 2, 3, 4, 5], [0, 1, 2, 3], 'portrait', 'A4', 8, false, false, false, true);
 
   //update
-  showModalEdit('configuration-edit', 'form-configuration-edit', 'modal-configuration-edit', [{input: 'text', name: 'company'}, {input: 'text', name: 'document'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}]);
+  showModalEdit('configuration-edit', 'form-configuration-edit', 'modal-configuration-edit', [{input: 'text', name: 'company'}, {input: 'text', name: 'document'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}, {input: 'text', name: 'tax'}, {input: 'text', name: 'tax_percentage'}, {input: 'text', name: 'currency'}]);
   updateR('form-configuration-edit', num, true);
 
 });

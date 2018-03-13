@@ -20,6 +20,14 @@
 			                  <label for="name">*Dirección</label>
 			                  <input name="address" type="text" class="form-control" id="address" placeholder="Direccción">
 			                </div>
+			                <div class="form-group">
+			                  <label for="name">*Impuesto</label>
+			                  <input name="tax" type="text" class="form-control" id="tax" placeholder="Impuesto">
+			                </div>
+			                <div class="form-group">
+			                  <label for="name">*Moneda</label>
+			                  <input name="currency" type="text" class="form-control" id="currency" placeholder="Moneda">
+			                </div>
 		              	</div>
 		              	<div class="col-xs-6">
 		              		<div class="form-group">
@@ -29,6 +37,10 @@
 			                <div class="form-group">
 			                  <label for="name">*Teléfono</label>
 			                  <input name="phone" type="text" class="form-control" id="phone" placeholder="Direccción">
+			                </div>
+			                <div class="form-group">
+			                  <label for="name">*Porcentaje Impuesto</label>
+			                  <input name="tax_percentage" type="text" class="form-control" id="tax_percentage" placeholder="Porcentaje Impuesto">
 			                </div>
 			                <div class="form-group">
 			                  <label for="exampleInputFile">Logo</label>

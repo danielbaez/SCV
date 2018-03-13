@@ -29,7 +29,10 @@ class ConfigurationRequest extends FormRequest
                 'company' => 'required',
                 'document' => 'required',
                 'address' => 'required',
-                'phone' => 'required'
+                'phone' => 'required',
+                'tax' => 'required',
+                'tax_percentage' => 'required',
+                'currency' => 'required'
             ];    
             
             if(!empty($this->file('logo')))

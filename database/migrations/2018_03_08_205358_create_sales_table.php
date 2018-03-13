@@ -20,8 +20,10 @@ class CreateSalesTable extends Migration
             $table->string('voucher');
             $table->string('voucher_serie');
             $table->string('voucher_number');
+            $table->string('tax');
+            $table->string('tax_percentage');
             $table->decimal('total', 8, 2);
-            $table->date('date');
+            $table->dateTime('date');
             $table->integer('state');
             $table->timestamps();
 

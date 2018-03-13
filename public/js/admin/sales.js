@@ -227,6 +227,14 @@ $(document).ready(function() {
     total = parseFloat(total);
     var f = (total+price).toFixed(2);
     $('#total').html(f);
+
+    var imp = parseFloat($('#percentage').data('percentage'));
+    //var subtotal = f - (f*imp/100);
+    var subtotal = f/(1+(imp/100));
+    //var impuesto_v = f*imp/100;
+    var impuesto_v = f - subtotal;
+    $('#subtotal').html(subtotal.toFixed(2));
+    $('#percentage').html(impuesto_v.toFixed(2));
   }
 
   function removePrice(price) {
@@ -235,6 +243,14 @@ $(document).ready(function() {
     total = parseFloat(total);
     var f = (total-price).toFixed(2);
     $('#total').html(f);
+
+    var imp = parseFloat($('#percentage').data('percentage'));
+    //var subtotal = f - (f*imp/100);
+    var subtotal = f/(1+(imp/100));
+    //var impuesto_v = f*imp/100;
+    var impuesto_v = f - subtotal;
+    $('#subtotal').html(subtotal.toFixed(2));
+    $('#percentage').html(impuesto_v.toFixed(2));
 
     if($('#tbody-products tr').length == 0) {
       $('.div-save-sale').hide();
@@ -287,6 +303,14 @@ $(document).ready(function() {
     var q = $('#quantity-'+id).find("input[name^='quantity']").val();
     var p = $('#sale_price-'+id).html();
     $('#amount-'+id).html((q*p).toFixed(2));
+
+    var imp = parseFloat($('#percentage').data('percentage'));
+    //var subtotal = total.toFixed(2) - (total.toFixed(2)*imp/100);
+    //var impuesto_v = total.toFixed(2)*imp/100;
+    var subtotal = total.toFixed(2)/(1+(imp/100));
+    var impuesto_v = total.toFixed(2) - subtotal;
+    $('#subtotal').html(subtotal.toFixed(2));
+    $('#percentage').html(impuesto_v.toFixed(2));
 
   });
 

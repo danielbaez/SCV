@@ -55,6 +55,9 @@ class ConfigurationsController extends Controller
         $configuration->document = $request->get('document');
         $configuration->address = $request->get('address');
         $configuration->phone = $request->get('phone');
+        $configuration->tax = $request->get('tax');
+        $configuration->tax_percentage = $request->get('tax_percentage');
+        $configuration->currency = $request->get('currency');
 
         if(!empty($request->file('logo')))
         {

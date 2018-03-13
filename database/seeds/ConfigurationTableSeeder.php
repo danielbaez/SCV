@@ -17,6 +17,9 @@ class ConfigurationTableSeeder extends Seeder
         	'document' => '78676567876',
         	'address' => 'San isidro labrador ,ded efe',
         	'phone' => '5273263',
+            'tax' => 'IGV',
+            'tax_percentage' => '18',
+            'currency' => 'S/ ',
         	'representative' => 'Daniel Baez'
         ]);
     }
