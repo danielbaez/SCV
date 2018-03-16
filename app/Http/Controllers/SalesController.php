@@ -128,7 +128,11 @@ class SalesController extends Controller
      */
     public function show($id)
     {
-        //
+        return Sale::with('customer')->with(array('sale_detail'=>function($query) {
+                        $query->with(array('product' => function($query) {
+                            $query->with('category')->with('brand')->with('presentation');
+                        }));
+                    }))->where('sales.id', $id)->get();
     }
 
     /**
@@ -160,8 +164,24 @@ class SalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Sale $sale)
     {
-        //
+        if($sale->state == 1)
+        {
+            $sale->state = 0;
+            $sale->save();
+
+            $sale_detail = Sale_detail::where('sale_id', $sale->id)->get();
+
+            foreach ($sale_detail as $key => $value) {
+                $product = Product::find($value->product_id);
+                $product->stock += $value->quantity;
+                $product->save();
+            }        
+            
+            $request->session()->flash('flash', 'Se ha anulado la venta correctamente');
+
+            return response()->json(['state' => true, 'url' => route('admin.sales.index')]);
+        }
     }
 }

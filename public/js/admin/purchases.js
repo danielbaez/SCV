@@ -339,6 +339,7 @@ $(document).ready(function() {
           html_provider += '<td class="text-center">'+response.provider.business_name+'</td>';
           html_provider += '<td class="text-center">'+response.provider.document+'</td>';
           html_provider += '<td class="text-center">'+response.provider.address+'</td>';
+          html_provider += '<td class="text-center">'+response.provider.phone+'</td>';
         html_provider += '</tr>';
         
         $('#tbody-purchase-provider').html(html_provider);

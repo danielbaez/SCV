@@ -413,15 +413,17 @@ $(document).ready(function() {
           html_detail += '<td class="text-center">S/ '+response.total+'</td>';
         html_detail += '</tr>';
 
-        var html_provider;
-        html_provider += '<tr>';
-          html_provider += '<td class="text-center">'+response.provider_id+'</td>';
-          html_provider += '<td class="text-center">'+response.provider.business_name+'</td>';
-          html_provider += '<td class="text-center">'+response.provider.document+'</td>';
-          html_provider += '<td class="text-center">'+response.provider.address+'</td>';
-        html_provider += '</tr>';
+        var html_customer;
+        html_customer += '<tr>';
+          html_customer += '<td class="text-center">'+response.customer_id+'</td>';
+          html_customer += '<td class="text-center">'+response.customer.name+'</td>';
+          html_customer += '<td class="text-center">'+response.customer.lastname+'</td>';
+          html_customer += '<td class="text-center">'+response.customer.document+'</td>';
+          html_customer += '<td class="text-center">'+response.customer.address+'</td>';
+          html_customer += '<td class="text-center">'+response.customer.phone+'</td>';
+        html_customer += '</tr>';
         
-        $('#tbody-sale-provider').html(html_provider);
+        $('#tbody-sale-customer').html(html_customer);
         $('#tbody-sale-detail').html(html_detail);
         $('#modal-sale-detail').modal('show');
        }

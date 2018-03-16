@@ -3,6 +3,7 @@
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/datatables-export-buttons/buttons.dataTables.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('adminlte/bower_components/select2/dist/css/select2.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/easy-autocomplete.min.css') }}">
 @endpush
 
@@ -79,6 +80,7 @@
 	<script src="{{ asset('js/datatables-export-buttons/buttons.html5.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.colVis.min.js') }}"></script>
+	<script src="{{ asset('adminlte/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 	<script src="{{ asset('js/jquery.easy-autocomplete.min.js') }}"></script>
 	<script src="{{ asset('js/admin/script.js') }}"></script>
 	<script src="{{ asset('js/admin/sales.js') }}"></script>
