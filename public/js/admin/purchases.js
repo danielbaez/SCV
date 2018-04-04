@@ -323,14 +323,14 @@ $(document).ready(function() {
             html_detail += '<td class="text-center">'+detail[i].product.brand.name+'</td>';
             html_detail += '<td class="text-center">'+detail[i].product.presentation.name+'</td>';
             html_detail += '<td class="text-center">'+detail[i].quantity+'</td>';
-            html_detail += '<td class="text-center">S/ '+detail[i].price+'</td>';
-            html_detail += '<td class="text-center">S/ '+(detail[i].quantity*detail[i].price)+'</td>';
+            html_detail += '<td class="text-center">'+response.currency+detail[i].price+'</td>';
+            html_detail += '<td class="text-center">'+response.currency+(detail[i].quantity*detail[i].price)+'</td>';
           html_detail += '</tr>';
         }
         html_detail += '<tr>';
           html_detail += '<td colspan="6"></td>';
           html_detail += '<td style="font-weight:bold" class="text-center">Total:</td>';
-          html_detail += '<td class="text-center">S/ '+response.total+'</td>';
+          html_detail += '<td class="text-center">'+response.currency+response.total+'</td>';
         html_detail += '</tr>';
 
         var html_provider;
@@ -369,5 +369,10 @@ $(document).ready(function() {
       });
     }
   });
+
+  $('#date').datepicker({
+    format:'dd/mm/yyyy',
+    autoclose: true
+  }).datepicker("setDate",'now');
 
 });

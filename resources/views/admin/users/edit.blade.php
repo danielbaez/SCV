@@ -29,12 +29,6 @@
 			                  <input name="password" type="password" class="form-control" id="password" placeholder="Contraseña">
 			                </div>
 			                <div class="form-group">
-			                  <label for="state">*Estado</label>
-			                  <br>
-			                  <label class="radio-inline"><input name="state" type="radio" value="1" checked>Activo</label>
-							  <label class="radio-inline"><input name="state" type="radio" value="0">Inactivo</label>
-			                </div>
-			                <div class="form-group">
 			                  <label for="rol">*Rol</label>
 		                         <select name="rol_id" class="form-control" id="rol_id">
 		                         	<option value="">Seleccione un rol</option>
@@ -43,16 +37,22 @@
                                     @endforeach
                                 </select>
 			                </div>
+			                <div class="form-group">
+			                  <label for="state">*Estado</label>
+			                  <br>
+			                  <label class="radio-inline"><input name="state" type="radio" value="1" checked>Activo</label>
+							  <label class="radio-inline"><input name="state" type="radio" value="0">Inactivo</label>
+			                </div>
 		              	</div>
 		              	<div class="col-xs-6">
 		              		
 			                <div class="form-group">
-			                  <label for="document">*Documento</label>
-			                  <input name="document" type="text" class="form-control" id="document" placeholder="Documento" maxlength="8">
+			                  <label for="document">*Nro Documento</label>
+			                  <input name="document" type="text" class="form-control" id="document" placeholder="Número de Documento" maxlength="8">
 			                </div>
 			                <div class="form-group">
 			                  <label for="birth_date">*Fecha Nac.</label>
-			                  <input name="birth_date" type="date" class="form-control" id="birth_date" placeholder="Documento">
+			                  <input name="birth_date" type="text" class="form-control birth_date" id="birth_date" placeholder="Fecha de nacimiento">
 			                </div>
 			                <div class="form-group">
 			                  <label for="address">*Dirección</label>

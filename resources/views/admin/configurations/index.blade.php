@@ -41,6 +41,9 @@
 				  			<th>Nro Documento</th>
 				  			<th>Dirección</th>
 				  			<th>Teléfono</th>
+				  			<th>Impuesto</th>
+				  			<th>Porcentaje</th>
+				  			<th>Moneda</th>
 				  			<th>Logo</th>
 				  			<th>Acción</th>
 				  		</thead>
@@ -50,6 +53,9 @@
 			  					<td>{{ $configuration->document }}</td>
 			  					<td>{{ $configuration->address }}</td>
 			  					<td>{{ $configuration->phone }}</td>
+			  					<td>{{ $configuration->tax }}</td>
+			  					<td>{{ $configuration->tax_percentage }}</td>
+			  					<td>{{ $configuration->currency }}</td>
 			  					<td>
 			  						@if($configuration->logo)
 			  							<img style="width: 150px; margin: auto" class="img-responsive" src="{{asset('images/'.$configuration->logo)}}">

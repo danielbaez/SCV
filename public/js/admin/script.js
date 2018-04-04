@@ -6,12 +6,13 @@ $.ajaxSetup({
 });
 
 //***DataTable***
-function dataTableSimple(tableId, fileName, titleFile, hiddenColumn, columnsExport, orientationPdf, pageSize, pageLength, search, order, pagination, customizePdf) {
+function dataTableSimple(tableId, fileName, titleFile, hiddenColumnOrder, hiddenColumn, columnsExport, orientationPdf, pageSize, pageLength, search, order, pagination, customizePdf) {
 
   $('#'+tableId).DataTable({
     order: order,
     "columnDefs": [
-      {"targets": hiddenColumn, orderable: false},
+      {"targets": hiddenColumnOrder, orderable: false},
+      {"targets": hiddenColumn, orderable: false, visible: false},
     ],
     dom: 'Bfrtip',
     buttons: [
@@ -117,7 +118,7 @@ function showModalEdit(id, formId, modalId, fields) {
        url: $(this).data('url-edit'),
        data: {},
        success: function(data) {
-        //console.log(data)
+        console.log(data)
         var formRolEdit = $('#'+formId);
         
         $.each(fields, function( index, value ) {
@@ -125,6 +126,10 @@ function showModalEdit(id, formId, modalId, fields) {
             formRolEdit.find('#'+value.name).val(data[value.name]);
           }else if(value.input == 'checkbox') {
             formRolEdit.find("input[name='"+value.name+"'][value='"+data.state+"']").prop("checked", true);
+          }else if(value.input == 'date') {
+            $('.birth_date').datepicker({
+                format:'dd/mm/yyyy',
+            }).datepicker("setDate", moment(data[value.name]).format('DD/MM/YYYY'));
           }
         });
 

@@ -12,9 +12,9 @@
 					<div class="row">				            
 		              	<div class="col-xs-6">
 			                <div class="form-group">
-			                  <label for="rol">*Tipo</label>
+			                  <label for="rol">*Comprobante</label>
 		                         <select name="name" class="form-control" id="name">
-		                         	<option value="">Seleccione un tipo de comprobante</option>
+		                         	<option value="">Seleccione un comprobante</option>
                                     @foreach($types as $type)
                                     	<option value="{{ $type['id'] }}">{{ $type['name'] }}</option>
                                     @endforeach

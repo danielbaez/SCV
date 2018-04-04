@@ -51,8 +51,14 @@ $(document).ready(function() {
     {data: 'presentation.name'},
     {data: 'minimum_stock'},
     {data: 'stock'},
-    {data: 'purchase_price'},
-    {data: 'sale_price'},
+    {data: 'purchase_price', render: function ( data, type, full, meta ) {
+        return full.currency+data;
+      }
+    },
+    {data: 'sale_price', render: function ( data, type, full, meta ) {
+        return full.currency+data;
+      }
+    },
     {data: 'state', visible: true, render: function ( data, type, full, meta ) {
         return data == 1 ? "<span class='badge alert-success'>Activo</span>" : "<span class='badge alert-danger'>Inactivo</span>";
       }

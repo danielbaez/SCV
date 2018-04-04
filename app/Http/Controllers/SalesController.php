@@ -10,6 +10,7 @@ use App\Customer;
 use App\Voucher;
 use App\Configuration;
 use App\Http\Requests\SaleRequest;
+//use Carbon\Carbon;
 
 class SalesController extends Controller
 {
@@ -48,6 +49,9 @@ class SalesController extends Controller
                 ->addColumn('action', function ($sales) {
                     return route('admin.sales.show', $sales->id).','.route('admin.sales.destroy', $sales->id);
                 })
+                /*->editColumn('date', function($sales) {
+                    return Carbon::parse($sales->date)->format('d/m/Y h:i:s A');
+                })*/
                 ->toJson();
     }
 
@@ -128,11 +132,14 @@ class SalesController extends Controller
      */
     public function show($id)
     {
-        return Sale::with('customer')->with(array('sale_detail'=>function($query) {
+        $currency = Configuration::first()->currency;
+        $detail = Sale::with('customer')->with(array('sale_detail'=>function($query) {
                         $query->with(array('product' => function($query) {
                             $query->with('category')->with('brand')->with('presentation');
                         }));
                     }))->where('sales.id', $id)->get();
+        $detail[0]->currency = $currency;
+        return $detail;
     }
 
     /**

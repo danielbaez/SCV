@@ -73,16 +73,16 @@
 						</div>
 						<div class="col-xs-12 col-md-4 text-center">
 							<div style="padding: 10px; background: #1d81d7; color: white">
-								<span style="font-size: 30px; font-weight: bold">{{ $configuration->currency }} <span id="total">0.00</span></span>
+								<span style="font-size: 30px; font-weight: bold">{{ $configuration->currency }}<span id="total">0.00</span></span>
 							</div>
 							<div class="row" style="margin: 0; border: 1px solid #1d81d7;">
 								<div class="col-xs-6" style="border-right: 1px solid #1d81d7;">
 									<p style="font-weight: bold">{{ $configuration->tax.' '.$configuration->tax_percentage.'%' }}</p>
-									<p style="margin-bottom: 4px">{{ $configuration->currency }} <span id="percentage" data-percentage="{{ $configuration->tax_percentage }}">0.00</span></p>
+									<p style="margin-bottom: 4px">{{ $configuration->currency }}<span id="percentage" data-percentage="{{ $configuration->tax_percentage }}">0.00</span></p>
 								</div>
 								<div class="col-xs-6">
 									<p style="font-weight: bold">Subtotal</p>
-									<p style="margin-bottom: 4px">{{ $configuration->currency }} <span id="subtotal">0.00</span></p>
+									<p style="margin-bottom: 4px">{{ $configuration->currency }}<span id="subtotal">0.00</span></p>
 								</div>								
 							</div>
 						</div>

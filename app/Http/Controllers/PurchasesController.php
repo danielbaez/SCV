@@ -8,7 +8,9 @@ use App\Purchase_detail;
 use App\Product;
 use App\Provider;
 use App\Voucher;
+use App\Configuration;
 use App\Http\Requests\PurchaseRequest;
+//use Carbon\Carbon;
 
 class PurchasesController extends Controller
 {
@@ -47,6 +49,9 @@ class PurchasesController extends Controller
                 ->addColumn('action', function ($purchases) {
                     return route('admin.purchases.show', $purchases->id).','.route('admin.purchases.destroy', $purchases->id);
                 })
+                /*->editColumn('date', function($purchases) {
+                    return Carbon::parse($purchases->date)->format('d/m/Y');
+                })*/
                 ->toJson();
     }
 
@@ -59,7 +64,8 @@ class PurchasesController extends Controller
     {
         $providers = Provider::all();
         $vouchers = Voucher::all();
-        return view('admin.purchases.create', compact('providers', 'vouchers'));
+        $configuration = Configuration::first();
+        return view('admin.purchases.create', compact('providers', 'vouchers', 'configuration'));
     }
 
     /**
@@ -88,7 +94,7 @@ class PurchasesController extends Controller
             'voucher_serie' => $request->get('voucher_serie'),
             'voucher_number' => $request->get('voucher_number'),
             'total' => $total,
-            'date' => $request->get('date'),
+            'date' => implode("-", array_reverse(explode("/", $request->get('date')))),
             'state' => 1
         ]);
 
@@ -120,11 +126,14 @@ class PurchasesController extends Controller
      */
     public function show($id)
     {
-        return Purchase::with('provider')->with(array('purchase_detail'=>function($query) {
+        $currency = Configuration::first()->currency;
+        $detail = Purchase::with('provider')->with(array('purchase_detail'=>function($query) {
                         $query->with(array('product' => function($query) {
                             $query->with('category')->with('brand')->with('presentation');
                         }));
                     }))->where('purchases.id', $id)->get();
+        $detail[0]->currency = $currency;
+        return $detail;
     }
 
     /**

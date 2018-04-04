@@ -8,6 +8,7 @@ use App\Category;
 use App\Brand;
 use App\Presentation;
 use App\Http\Requests\ProductRequest;
+use App\Configuration;
 
 class ProductsController extends Controller
 {
@@ -64,6 +65,9 @@ class ProductsController extends Controller
                 })
                 ->addColumn('action', function ($products) {
                     return route('admin.products.edit', $products->id).','.route('admin.products.update', $products->id).','.route('admin.products.destroy', $products->id);
+                })
+                ->addColumn('currency', function ($products) {
+                    return Configuration::first()->currency;
                 })
                 ->toJson();
     }

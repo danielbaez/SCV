@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Rol;
+use Carbon\Carbon;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -35,5 +37,10 @@ class User extends Authenticatable
     public function rol()
     {
         return $this->belongsTo(Rol::class);
+    }
+
+    public function getBirthDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 }

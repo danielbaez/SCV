@@ -87,7 +87,7 @@ class UsersController extends Controller
         	'state' => $request->get('state'),
         	'rol_id' => $request->get('rol_id'),
         	'document' => $request->get('document'),
-        	'birth_date' => $request->get('birth_date'),
+        	'birth_date' => implode("-", array_reverse(explode("/", $request->get('birth_date')))),
         	'address' => $request->get('address'),
         	'phone' => $request->get('phone')
         ]);
@@ -148,7 +148,7 @@ class UsersController extends Controller
         $user->state = $request->get('state');
         $user->rol_id = $request->get('rol_id');
         $user->document = $request->get('document');
-        $user->birth_date = $request->get('birth_date');
+        $user->birth_date = implode("-", array_reverse(explode("/", $request->get('birth_date'))));
         $user->address = $request->get('address');
         $user->phone = $request->get('phone');
 

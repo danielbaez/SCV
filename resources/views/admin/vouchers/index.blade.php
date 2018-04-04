@@ -41,7 +41,7 @@
 	            	<table class="table table-bordered table-hover table-width-100" id="vouchers">
 				  		<thead>
 				  			<th>ID</th>
-				  			<th>Nombre</th>
+				  			<th>Comprobante</th>
 				  			<th>Nro Serie</th>
 				  			<th>Nro Incial</th>
 				  			<th>Nro Final</th>

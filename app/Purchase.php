@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Purchase extends Model
 {
@@ -18,5 +19,10 @@ class Purchase extends Model
     public function purchase_detail()
     {
         return $this->hasMany(Purchase_detail::class);
+    }
+
+    public function getDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 }

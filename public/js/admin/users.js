@@ -11,7 +11,7 @@ $(document).ready(function() {
   //create
   storeR('form-user-create', num, true);
   //update
-  showModalEdit('user-edit', 'form-user-edit', 'modal-user-edit', [{input: 'text', name: 'name'}, {input: 'text', name: 'lastname'}, {input: 'text', name: 'email'}, {input: 'text', name: 'rol_id'}, {input: 'text', name: 'document'}, {input: 'text', name: 'birth_date'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}, {input: 'checkbox', name: 'state'}]);
+  showModalEdit('user-edit', 'form-user-edit', 'modal-user-edit', [{input: 'text', name: 'name'}, {input: 'text', name: 'lastname'}, {input: 'text', name: 'email'}, {input: 'text', name: 'rol_id'}, {input: 'text', name: 'document'}, {input: 'date', name: 'birth_date'}, {input: 'text', name: 'address'}, {input: 'text', name: 'phone'}, {input: 'checkbox', name: 'state'}]);
   updateR('form-user-edit', num, true);
 
   //delete
@@ -201,6 +201,11 @@ $(document).ready(function() {
 	//$('.dt-buttons.btn-group').append('<button type="button" onclick="fnAction(\'excel\');" class="btn btn-default">Excel</button><button type="button" onclick="fnAction(\'csv\');" class="btn btn-default">CSV</button><button type="button" onclick="fnAction(\'pdf\');" class="btn btn-default">PDF</button>').addClass('m-l-1')
 
   overwriteButtons();
+
+  $('.birth_date').datepicker({
+    format:'dd/mm/yyyy',
+    autoclose: true
+  });
 
 });
 

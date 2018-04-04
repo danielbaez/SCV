@@ -2,8 +2,10 @@
 
 @push('styles')
 	<link rel="stylesheet" href="{{ asset('adminlte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('adminlte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/datatables-export-buttons/buttons.dataTables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/easy-autocomplete.min.css') }}">
+	
 @endpush
 
 @section('header')
@@ -60,7 +62,7 @@
 						<div class="col-xs-12 col-md-2">
 							<div class="form-group">
 					            <label for="date">*Fecha</label>
-				                <input name="date" type="date" class="form-control" id="date">
+				                <input name="date" type="text" class="form-control" id="date">
 				            </div>
 						</div>
 					</div>
@@ -83,7 +85,7 @@
 						</div>
 						<div class="col-xs-12 col-md-4 text-center">
 							<div style="padding: 10px; background: #1d81d7; color: white">
-								<span style="font-size: 30px; font-weight: bold">S/ <span id="total">0.00</span></span>
+								<span style="font-size: 30px; font-weight: bold">{{ $configuration->currency }}<span id="total">0.00</span></span>
 							</div>
 						</div>
 					</div>
@@ -137,6 +139,7 @@
 	<script src="{{ asset('js/datatables-export-buttons/buttons.print.min.js') }}"></script>
 	<script src="{{ asset('js/datatables-export-buttons/buttons.colVis.min.js') }}"></script>
 	<script src="{{ asset('js/jquery.easy-autocomplete.min.js') }}"></script>
+	<script src="{{ asset('adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 	<script src="{{ asset('js/admin/script.js') }}"></script>
 	<script src="{{ asset('js/admin/purchases.js') }}"></script>
 @endpush
