@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Product;
+use App\Inventory;
 
 class ProductsTableSeeder extends Seeder
 {
@@ -12,7 +13,7 @@ class ProductsTableSeeder extends Seeder
      */
     public function run()
     {
-        Product::create([
+        $product = Product::create([
         	'category_id' => 1,
         	'brand_id' => 1,
         	'presentation_id' => 1,
@@ -24,7 +25,16 @@ class ProductsTableSeeder extends Seeder
             'state' => 1
         ]);
 
-        Product::create([
+        Inventory::create([
+            'product_id' => $product->id,
+            'table_id' => $product->id,
+            'initial_balance' => $product->stock,
+            'input' => 0,
+            'output' => 0,
+            'balance' => $product->stock
+        ]);
+
+        $product = Product::create([
             'category_id' => 1,
             'brand_id' => 2,
             'presentation_id' => 1,
@@ -36,7 +46,16 @@ class ProductsTableSeeder extends Seeder
             'state' => 1
         ]);
 
-        Product::create([
+        Inventory::create([
+            'product_id' => $product->id,
+            'table_id' => $product->id,
+            'initial_balance' => $product->stock,
+            'input' => 0,
+            'output' => 0,
+            'balance' => $product->stock
+        ]);
+
+        $product = Product::create([
             'category_id' => 1,
             'brand_id' => 3,
             'presentation_id' => 2,
@@ -46,6 +65,15 @@ class ProductsTableSeeder extends Seeder
             'purchase_price' => '2000',
             'sale_price' => '2500',
             'state' => 1
+        ]);
+
+        Inventory::create([
+            'product_id' => $product->id,
+            'table_id' => $product->id,
+            'initial_balance' => $product->stock,
+            'input' => 0,
+            'output' => 0,
+            'balance' => $product->stock
         ]);
     }
 }

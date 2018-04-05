@@ -9,6 +9,7 @@ use App\Product;
 use App\Provider;
 use App\Voucher;
 use App\Configuration;
+use App\Inventory;
 use App\Http\Requests\PurchaseRequest;
 //use Carbon\Carbon;
 
@@ -111,6 +112,15 @@ class PurchasesController extends Controller
             $product->purchase_price = $purchase_price[$key];
             $product->stock += $quantity[$key];
             $product->save();
+
+            Inventory::create([
+                'product_id' => $product->id,
+                'table_id' => $purchase->id,
+                'initial_balance' => $product->stock - $quantity[$key],
+                'input' => $quantity[$key],
+                'output' => 0,
+                'balance' => $product->stock
+            ]);
         }
 
         $request->session()->flash('flash', 'Se ha creado la compra correctamente');
@@ -178,6 +188,21 @@ class PurchasesController extends Controller
                 $product = Product::find($value->product_id);
                 $product->stock -= $value->quantity;
                 $product->save();
+
+                $inventory_for_delete = Inventory::where('product_id', $value->product_id)->where('table_id', $purchase->id)->where('input', $value->quantity)->get();
+
+                Inventory::find($inventory_for_delete[0]->id)->delete();
+
+                $inventory_update = Inventory::where('product_id', $value->product_id)->where('input', '>', 0)->where('id', '>', $inventory_for_delete[0]->id)->get();
+
+                foreach ($inventory_update as $key => $inventory)
+                {
+                    $upd = Inventory::find($inventory->id);
+                    $upd->initial_balance = $upd->initial_balance - $inventory_for_delete[0]->input;
+                    $upd->balance = $upd->initial_balance + $upd->input;
+                    $upd->save();
+                }
+
             }        
             
             $request->session()->flash('flash', 'Se ha anulado la compra correctamente');

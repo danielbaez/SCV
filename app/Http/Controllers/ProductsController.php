@@ -9,6 +9,7 @@ use App\Brand;
 use App\Presentation;
 use App\Http\Requests\ProductRequest;
 use App\Configuration;
+use App\Inventory;
 
 class ProductsController extends Controller
 {
@@ -103,7 +104,14 @@ class ProductsController extends Controller
             'state' => $request->get('state')
         ]);
 
-        $product->save();
+        Inventory::create([
+            'product_id' => $product->id,
+            'table_id' => $product->id,
+            'initial_balance' => $product->stock,
+            'input' => 0,
+            'output' => 0,
+            'balance' => $product->stock
+        ]);
 
         $request->session()->flash('flash', 'Se ha creado el producto correctamente');
 

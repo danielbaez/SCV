@@ -61,6 +61,19 @@
     </ul>
   </li>
 
+  <li class="treeview {{ setActiveRoute(['admin.categories.index']) }}">
+    <a href="#"><i class="fa fa-product-hunt"></i> <span>Inventario</span>
+      <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+      <li class="{{ setActiveRoute('admin.categories.index') }}">
+        <a href="{{ route('admin.categories.index') }}"><i class="fa fa-certificate"></i> Kardex</a>
+      </li>
+    </ul>
+  </li>
+
   <li class="treeview {{ setActiveRoute(['admin.providers.index', 'admin.purchases.index', 'admin.purchases.create']) }}">
     <a href="#"><i class="fa fa-shopping-cart"></i> <span>Compras</span>
       <span class="pull-right-container">
